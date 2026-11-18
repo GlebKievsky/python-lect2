@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Л2. Условия и строки</title>
+<script>
+(function(){var c='system';try{c=localStorage.getItem('py-course-theme')||'system'}catch(e){}
+var d=c==='system'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches):c==='dark';
+document.documentElement.setAttribute('data-theme',d?'dark':'light')})();
+</script>
+<style>
+/* ===== Дизайн-система курса: «тетрадь инженера» ===== */
+:root{
+  --paper:#F4EFE4; --paper-2:#EAE3D2; --card:#FFFCF5; --ink:#1D1B2E; --ink-2:#48455C; --ink-3:#625E74;
+  --line:#D6CDB8; --accent:#A83210; --accent-bg:#D9552B; --accent-soft:#F7DCCF; --on-accent:#FFFFFF;
+  --sea:#0A6968; --sea-soft:#CDE6E1; --sun:#E9B33C; --sun-soft:#F8E7B4; --plum:#73388A; --plum-soft:#EBDAF0;
+  --ok:#256B31; --ok-soft:#D5ECD6; --err:#A8221B; --err-soft:#FADFDB;
+  --shade:#1D1B2E; --marker:#F5D36B;
+  --code-bg:#FFFFFF; --code-line:#E2DAC8; --code-num:#77705D; --code-head:#EFE8D9;
+  --out-bg:#211F36; --out-ink:#EFEADF; --out-dim:#B4AFC6; --out-typed:#FFC95C; --out-err:#FFA79E;
+  --sb:rgba(29,27,46,.22); --sb-hover:rgba(29,27,46,.45);
+  --t-k:#0000FF; --t-c:#AF00DB; --t-s:#A31515; --t-m:#008000; --t-n:#098658; --t-f:#795E26; --t-t:#267F99; --t-v:#001080; --t-o:#000000;
+  --f-display:"Sitka Display","Sitka Heading","Constantia","Iowan Old Style","Palatino Linotype","Noto Serif",Georgia,serif;
+  --f-body:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Roboto","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Code","Cascadia Mono",Consolas,"SF Mono",Menlo,"DejaVu Sans Mono","Courier New",monospace;
+  --top:56px;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --paper:#13141F; --paper-2:#1B1D2B; --card:#1E2030; --ink:#EEE9DD; --ink-2:#C4C0D0; --ink-3:#A29EB3;
+  --line:#353850; --accent:#FF9166; --accent-bg:#E0633A; --accent-soft:#4A2A20; --on-accent:#14110F;
+  --sea:#5FD3C6; --sea-soft:#183B3A; --sun:#F2C55C; --sun-soft:#4A3D17; --plum:#D7A6EA; --plum-soft:#3A2646;
+  --ok:#7FD48A; --ok-soft:#1D3A24; --err:#FF9A90; --err-soft:#4A211E;
+  --shade:#07070C; --marker:#6B5516;
+  --code-bg:#1E1E1E; --code-line:#33364A; --code-num:#8E8E99; --code-head:#262838;
+  --out-bg:#0C0D15; --out-ink:#E9E4D8; --out-dim:#A09CB2; --out-typed:#FFC95C; --out-err:#FFA79E;
+  --sb:rgba(238,233,221,.2); --sb-hover:rgba(238,233,221,.42);
+  --t-k:#569CD6; --t-c:#C586C0; --t-s:#CE9178; --t-m:#6A9955; --t-n:#B5CEA8; --t-f:#DCDCAA; --t-t:#4EC9B0; --t-v:#9CDCFE; --t-o:#D4D4D4;
+  color-scheme:dark;
+}
+
+/* ===== Основа ===== */
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--paper);-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--top) + 18px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.68 var(--f-body);overflow-wrap:break-word}
+h1,h2,h3{font-family:var(--f-display);line-height:1.12;margin:0;font-weight:700;letter-spacing:-.01em}
+p{margin:0 0 1.05em}
+a{color:var(--accent);text-underline-offset:.18em}
+strong{font-weight:650}
+ul,ol{margin:0 0 1.1em;padding-left:1.35em}
+li{margin:.3em 0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--sea);outline-offset:3px;border-radius:4px}
+kbd{font:600 .82em/1 var(--f-mono);padding:.22em .5em;border:1.5px solid var(--ink);border-bottom-width:3px;border-radius:6px;background:var(--card);white-space:nowrap}
+code{font-family:var(--f-mono);font-size:.9em}
+code,pre,kbd,.mono,.steplist,.steplist *,.expr,.expr *,.screen,.screen *,.bug-line,.bug-msg,.out,.out *,.lg-steps,.lg-steps *,.sl-expr,.sl-expr *,input[type="text"],.lp-cond,.lp-var b,.chipset button{font-variant-ligatures:none!important;font-feature-settings:"liga" 0,"calt" 0!important}
+p code,li code,td code,summary code,.note code{background:var(--code-bg);border:1px solid var(--code-line);border-radius:5px;padding:.08em .34em;white-space:nowrap;color:var(--t-o)}
+.term{font-weight:650;background:linear-gradient(transparent 58%,var(--marker) 58%);padding:0 .08em}
+
+/* свои полосы прокрутки: тонкие, полупрозрачные */
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--sb);border-radius:99px;border:3.5px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:var(--sb-hover);border:3px solid transparent;background-clip:content-box}
+@supports not selector(::-webkit-scrollbar){*{scrollbar-width:thin;scrollbar-color:var(--sb) transparent}}
+
+/* ===== Шапка и прогресс ===== */
+.progress{position:fixed;inset:0 0 auto 0;height:4px;z-index:60;background:transparent;pointer-events:none}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--sun),var(--accent-bg));border-radius:0 4px 4px 0}
+.topbar{position:sticky;top:0;z-index:50;height:var(--top);display:flex;align-items:center;gap:.75rem;padding:0 clamp(.75rem,3vw,1.75rem);
+  background:var(--paper);border-bottom:1.5px solid var(--ink)}
+.brand{display:flex;align-items:center;gap:.6rem;min-width:0;margin-right:auto;font-weight:650;font-size:.92rem;text-decoration:none;color:var(--ink)}
+.brand b{flex:none;display:grid;place-items:center;width:34px;height:34px;border:1.5px solid var(--ink);border-radius:9px 9px 9px 2px;background:var(--sun);color:#1D1B2E;font:700 .95rem/1 var(--f-mono);box-shadow:2.5px 2.5px 0 var(--shade)}
+.brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand small{color:var(--ink-3);font-weight:500;font-size:.86em}
+.toc-btn{display:none;align-items:center;gap:.4rem;height:36px;padding:0 .7rem;border:1.5px solid var(--ink);border-radius:9px;background:var(--card);cursor:pointer;font-weight:600;font-size:.85rem}
+.toc-btn svg{width:16px;height:16px}
+.themes{display:flex;flex:none;border:1.5px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--card)}
+.themes button{display:flex;align-items:center;gap:.35rem;height:34px;padding:0 .6rem;border:0;background:transparent;cursor:pointer;font-size:.8rem;font-weight:600;color:var(--ink-2)}
+.themes button+button{border-left:1.5px solid var(--ink)}
+.themes button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.themes svg{width:16px;height:16px;flex:none}
+
+/* ===== Каркас ===== */
+.shell{display:grid;grid-template-columns:270px minmax(0,1fr);gap:clamp(1.5rem,4vw,3.5rem);max-width:1220px;margin:0 auto;padding:0 clamp(1rem,3vw,1.75rem)}
+main{min-width:0;max-width:800px;padding-bottom:4rem}
+.toc{position:sticky;top:calc(var(--top) + 1.25rem);align-self:start;max-height:calc(100vh - var(--top) - 2.5rem);overflow:auto;padding:1.1rem .4rem 1rem 0;margin-top:1.5rem}
+.toc h2{font:700 .72rem/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .8rem .2rem}
+.toc ol{list-style:none;margin:0;padding:0;border-left:1.5px solid var(--line)}
+.toc li{margin:0}
+.toc a{display:flex;gap:.6rem;align-items:baseline;padding:.42rem .5rem .42rem .8rem;margin-left:-1.5px;border-left:3px solid transparent;color:var(--ink-2);text-decoration:none;font-size:.9rem;line-height:1.3;border-radius:0 8px 8px 0}
+.toc a:hover{color:var(--ink);background:var(--paper-2)}
+.toc-n{font:600 .74rem/1 var(--f-mono);color:var(--ink-3);flex:none}
+.toc a.done .toc-n{color:var(--ok)}
+.toc a.active{color:var(--ink);font-weight:650;border-left-color:var(--accent-bg);background:var(--paper-2)}
+.toc a.active .toc-n{color:var(--accent)}
+
+/* ===== Титульный блок ===== */
+.hero{position:relative;padding:clamp(2.2rem,7vw,4.5rem) 0 clamp(1.6rem,4vw,2.6rem);margin-bottom:1rem;overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;background-image:radial-gradient(var(--line) 1.3px,transparent 1.5px);background-size:22px 22px;
+  -webkit-mask-image:linear-gradient(115deg,transparent 30%,#000 100%);mask-image:linear-gradient(115deg,transparent 30%,#000 100%)}
+.hero-num{position:absolute;z-index:-1;right:-.03em;top:-.02em;font:italic 700 clamp(10.5rem,36vw,23rem)/.8 var(--f-display);letter-spacing:-.05em;color:transparent;-webkit-text-stroke:2px var(--accent-bg);user-select:none}
+.hero-num::after{content:attr(data-n);position:absolute;left:.035em;top:.035em;z-index:-1;color:var(--sun-soft);-webkit-text-stroke:0}
+.kicker{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:0 0 1.1rem;font:700 .74rem/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.kicker span{padding:.42rem .65rem;border:1.5px solid var(--ink);border-radius:99px;background:var(--card);color:var(--ink)}
+.kicker span:first-child{background:var(--ink);color:var(--paper)}
+.hero h1{font-size:clamp(2.5rem,8.4vw,5rem);max-width:11ch;text-wrap:balance}
+.hero h1 em{display:block;margin-top:.6rem;font:italic 400 clamp(1.15rem,3.2vw,1.7rem)/1.25 var(--f-display);letter-spacing:0;color:var(--ink-2);max-width:22ch}
+.lead{max-width:36rem;margin:1.6rem 0 0;font-size:1.12rem;line-height:1.6;padding:1rem 1.15rem;background:var(--card);border:1.5px solid var(--ink);border-radius:4px 18px 18px 18px;box-shadow:5px 5px 0 var(--accent-bg)}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;padding:0;margin:1.5rem 0 0}
+.chips li{margin:0;padding:.3rem .7rem;border:1.5px dashed var(--ink-3);border-radius:99px;font-size:.84rem;font-weight:600;background:var(--paper)}
+
+/* ===== Разделы ===== */
+.sec{padding-top:clamp(2.2rem,5vw,3.4rem)}
+.sec-head{display:flex;align-items:flex-end;gap:.9rem;margin-bottom:1.3rem;padding-bottom:.8rem;border-bottom:1.5px solid var(--ink)}
+.sec-num{flex:none;font:italic 700 clamp(3.4rem,9vw,5.2rem)/.74 var(--f-display);color:var(--accent);letter-spacing:-.04em}
+.sec-head h2{font-size:clamp(1.55rem,4.2vw,2.3rem);text-wrap:balance}
+.sec-head p{margin:.3rem 0 0;font:600 .74rem/1.2 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+h3{font-size:clamp(1.18rem,2.8vw,1.42rem);margin:2rem 0 .7rem}
+h3::before{content:"";display:inline-block;width:.7em;height:.7em;margin-right:.5em;background:var(--sun);border:1.5px solid var(--ink);border-radius:3px 50% 50% 50%;transform:translateY(.03em)}
+
+/* карточки «было — стало» и план */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:1rem;margin:1.2rem 0}
+.tile{padding:1rem 1.1rem;background:var(--card);border:1.5px solid var(--ink);border-radius:16px 16px 16px 3px}
+.tile h3{margin:0 0 .5rem;font-size:1.08rem}
+.tile h3::before{display:none}
+.tile ul{margin:0;padding-left:1.1em;font-size:.95rem}
+.tile.b{background:var(--sea-soft)} .tile.c{background:var(--sun-soft)}
+.plan{list-style:none;padding:0;margin:1.2rem 0;display:grid;gap:.55rem;counter-reset:pl}
+.plan li{counter-increment:pl;display:grid;grid-template-columns:2.6rem 1fr;align-items:baseline;gap:.2rem;margin:0;padding:.6rem .9rem .6rem .4rem;background:var(--card);border:1.5px solid var(--line);border-radius:12px}
+.plan li::before{content:counter(pl);font:italic 700 1.5rem/1 var(--f-display);color:var(--accent);text-align:center}
+.plan b{font-weight:650}
+.plan span{color:var(--ink-2);font-size:.93rem}
+
+/* ===== Выноски ===== */
+.note{--c:var(--sun);--cs:var(--sun-soft);position:relative;margin:2rem 0 1.6rem;padding:1.25rem 1.15rem .95rem;background:var(--card);border:1.5px solid var(--ink);border-radius:4px 18px 18px 18px;box-shadow:5px 5px 0 var(--c)}
+.note>:last-child{margin-bottom:0}
+.note .tag{position:absolute;top:-.82rem;left:.9rem;padding:.36rem .7rem;background:var(--cs);border:1.5px solid var(--ink);border-radius:99px;font:700 .7rem/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.note.warn{--c:var(--accent-bg);--cs:var(--accent-soft)}
+.note.term-box{--c:var(--sea);--cs:var(--sea-soft)}
+.note.kr{--c:var(--plum);--cs:var(--plum-soft)}
+.recap{margin:1.8rem 0 0;padding:1rem 1.1rem;border:1.5px dashed var(--ink-3);border-radius:14px;background:var(--paper-2)}
+.recap h3{margin:0 0 .5rem;font:700 .74rem/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.recap h3::before{display:none}
+.recap ul{list-style:none;margin:0;padding:0}
+.recap li{position:relative;padding-left:1.6rem;margin:.38rem 0}
+.recap li::before{content:"";position:absolute;left:.15rem;top:.48em;width:.8rem;height:.42rem;border-left:2.5px solid var(--ok);border-bottom:2.5px solid var(--ok);transform:rotate(-45deg)}
+
+/* ===== Код ===== */
+.code{margin:1.4rem 0;border:1.5px solid var(--ink);border-radius:14px 14px 14px 3px;overflow:hidden;background:var(--code-bg);box-shadow:5px 5px 0 var(--shade)}
+.code figcaption{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.38rem .5rem .38rem .9rem;background:var(--code-head);border-bottom:1.5px solid var(--ink)}
+.code-name{font:600 .78rem/1.2 var(--f-mono);color:var(--ink-2);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.copy{flex:none;height:28px;padding:0 .65rem;border:1.5px solid var(--ink);border-radius:8px;background:var(--card);cursor:pointer;font:600 .76rem/1 var(--f-body)}
+.copy:hover{background:var(--sun-soft)}
+.copy.ok{background:var(--ok-soft);border-color:var(--ok)}
+.code pre{margin:0;padding:.85rem 1rem .85rem 0;overflow-x:auto;font:400 .875rem/1.62 var(--f-mono);tab-size:4;color:var(--t-o);counter-reset:ln}
+.code pre code{font-size:inherit;display:block;width:max-content;min-width:100%}
+.code .l{display:inline-block;min-width:100%;min-height:1.62em;vertical-align:top;padding-left:3.5rem;position:relative;counter-increment:ln}
+.code .l::before{content:counter(ln);position:absolute;left:0;width:2.6rem;text-align:right;color:var(--code-num);user-select:none}
+.code.nonum .l{padding-left:1rem}
+.code.nonum .l::before{display:none}
+.t-k{color:var(--t-k)} .t-c{color:var(--t-c)} .t-s{color:var(--t-s)} .t-m{color:var(--t-m)} .t-n{color:var(--t-n)} .t-f{color:var(--t-f)} .t-t{color:var(--t-t)} .t-v{color:var(--t-v)}
+.out{background:var(--out-bg);color:var(--out-ink);border-top:1.5px solid var(--ink)}
+.out-label{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.3rem 1rem;padding:.5rem 1rem 0;font:700 .66rem/1.2 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--out-dim)}
+.out-legend{letter-spacing:.02em;text-transform:none;font-weight:500;font-size:.74rem}
+.out pre{padding:.4rem 1rem .85rem;color:var(--out-ink);counter-reset:none}
+.out .typed{color:var(--out-typed);font-weight:600;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:.22em}
+.out.err{background:var(--out-bg)}
+.out.err .out-label span{color:var(--out-err)}
+.out.err pre{color:var(--out-err)}
+.out+.out{border-top:1px dashed var(--out-dim)}
+code.py{white-space:nowrap}
+
+/* ===== Таблицы ===== */
+.tbl-wrap{margin:1.3rem 0;overflow-x:auto;border:1.5px solid var(--ink);border-radius:14px 14px 14px 3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{padding:.55rem .85rem;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{font:700 .7rem/1.2 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);background:var(--paper-2);border-bottom:1.5px solid var(--ink);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+table.wide{min-width:640px}
+td code{white-space:nowrap}
+.evals td:nth-child(2){white-space:nowrap}
+code.res{font-weight:600;background:var(--sun-soft);border-color:transparent;color:var(--ink)}
+code.res.bad{background:var(--err-soft);color:var(--err)}
+
+/* ===== Тренажёры ===== */
+.lab{margin:2rem 0;border:1.5px solid var(--ink);border-radius:18px 18px 18px 4px;background:var(--card);box-shadow:6px 6px 0 var(--sea);overflow:hidden}
+.lab-head{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .8rem;padding:.7rem 1rem;background:var(--sea-soft);border-bottom:1.5px solid var(--ink)}
+.lab-head b{padding:.3rem .6rem;border:1.5px solid var(--ink);border-radius:99px;background:var(--card);font:700 .66rem/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase}
+.lab-head h3{margin:0;font-size:1.12rem}
+.lab-head h3::before{display:none}
+.lab-body{padding:1rem}
+.lab-body>p:first-child{color:var(--ink-2);font-size:.95rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:38px;padding:.3rem .85rem;border:1.5px solid var(--ink);border-radius:10px;background:var(--sun);color:#1D1B2E;font-weight:650;font-size:.9rem;cursor:pointer;box-shadow:3px 3px 0 var(--shade)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shade)}
+.btn.ghost{background:var(--card);color:var(--ink)}
+.btn[disabled]{opacity:.45;cursor:default;box-shadow:none;transform:none}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}
+.field{display:flex;flex-direction:column;gap:.25rem;font-size:.84rem;font-weight:600;color:var(--ink-2);min-width:0}
+.field input[type="text"],.field input[type="number"]{width:100%;height:40px;padding:0 .7rem;border:1.5px solid var(--ink);border-radius:10px;background:var(--code-bg);color:var(--t-o);font:500 1rem/1 var(--f-mono)}
+input[type="range"]{width:100%;accent-color:var(--accent-bg);height:28px}
+.say{margin:.9rem 0 0;padding:.7rem .85rem;border-left:4px solid var(--sea);background:var(--paper-2);border-radius:0 10px 10px 0;font-size:.95rem}
+.mono{font-family:var(--f-mono)}
+
+/* ===== Проверь себя ===== */
+.quiz{counter-reset:q;margin-top:1.2rem}
+.quiz-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem;margin:1rem 0}
+.quiz-score{font-weight:650}
+.q{counter-increment:q;margin:.8rem 0;border:1.5px solid var(--ink);border-radius:14px 14px 14px 3px;background:var(--card)}
+.q[open]{box-shadow:5px 5px 0 var(--plum)}
+.q summary{display:grid;grid-template-columns:2.4rem 1fr 1.6rem;gap:.5rem;align-items:start;padding:.85rem .9rem;cursor:pointer;list-style:none;font-weight:600}
+.q summary::-webkit-details-marker{display:none}
+.q summary::before{content:counter(q);font:italic 700 1.6rem/1 var(--f-display);color:var(--plum);text-align:center}
+.q summary::after{content:"+";display:grid;place-items:center;width:1.6rem;height:1.6rem;border:1.5px solid var(--ink);border-radius:50%;font:700 1rem/1 var(--f-mono);background:var(--plum-soft)}
+.q[open] summary::after{content:"–"}
+.q .a{padding:0 .9rem .9rem 3.4rem}
+.q .a>:last-child{margin-bottom:0}
+.q .mark{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.8rem}
+.q .mark .btn{min-height:32px;font-size:.8rem;box-shadow:2px 2px 0 var(--shade)}
+.q[data-mark="yes"]{border-color:var(--ok)} .q[data-mark="no"]{border-color:var(--err)}
+.q[data-mark="yes"] summary::before{color:var(--ok)} .q[data-mark="no"] summary::before{color:var(--err)}
+.q .mark .btn[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+.foot{margin-top:3.5rem;padding:1.2rem 1.2rem;border:1.5px solid var(--ink);border-radius:18px 18px 18px 4px;background:var(--ink);color:var(--paper)}
+.foot h2{font-size:1.35rem;margin-bottom:.4rem}
+.foot p{margin:0;opacity:.9}
+
+/* ===== Общие части тренажёров ===== */
+.chipset{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0}
+.chipset button{min-height:34px;padding:.2rem .7rem;border:1.5px solid var(--ink);border-radius:99px;background:var(--paper);cursor:pointer;font:600 .86rem/1 var(--f-mono)}
+.chipset button:hover{background:var(--sun-soft)}
+.chipset button[aria-pressed="true"],.chipset button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.lab .tbl-wrap{margin:.9rem 0 0;border-radius:12px}
+.lab td.bad{color:var(--err);font-weight:600}
+.lab td .v{font:600 .95rem/1.4 var(--f-mono);white-space:pre-wrap;overflow-wrap:anywhere}
+.bug-case[hidden]{display:none}
+.bug-code{display:grid;gap:.25rem;padding:.55rem;border:1.5px solid var(--ink);border-radius:12px;background:var(--code-bg);overflow-x:auto}
+.bug-line{display:flex;gap:.8rem;align-items:baseline;width:100%;min-width:max-content;padding:.38rem .65rem;border:1.5px solid transparent;border-radius:8px;background:transparent;cursor:pointer;text-align:left;font:.9rem/1.5 var(--f-mono);color:var(--t-o)}
+.bug-line code{font-size:inherit;white-space:pre}
+.bug-line:hover{border-color:var(--ink-3)}
+.bug-line.hit{border-color:var(--ok);box-shadow:inset 5px 0 0 var(--ok)}
+.bug-line.miss{border-color:var(--err);box-shadow:inset 5px 0 0 var(--err)}
+.bug-n{color:var(--code-num);user-select:none}
+.bug-msg{margin:.8rem 0 0;padding:.75rem .95rem;border-radius:10px;background:var(--out-bg);color:var(--out-err);font:.84rem/1.55 var(--f-mono);overflow-x:auto}
+.bug-msg[hidden],.bug-why[hidden]{display:none}
+.bug-why{border-left-color:var(--ok)}
+.bug-q{font-weight:650;margin:.2rem 0 .7rem}
+.sum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1rem}
+.sum-grid ol{margin:0;padding-left:1.3em}
+.sum-grid dl{margin:0}
+.sum-grid dt{font-weight:700;margin-top:.55rem}
+.sum-grid dt:first-child{margin-top:0}
+.sum-grid dd{margin:0;color:var(--ink-2);font-size:.95rem}
+
+.steplist{list-style:none;margin:.9rem 0 0;padding:.5rem;border:1.5px solid var(--ink);border-radius:12px;background:var(--code-bg);font:.9rem/1.5 var(--f-mono);counter-reset:n;color:var(--t-o);overflow-x:auto}
+.steplist li{counter-increment:n;display:flex;align-items:center;gap:.7rem;margin:.12rem 0;padding:.25rem .5rem .25rem 2.1rem;border:1.5px solid transparent;border-radius:8px;position:relative;min-width:max-content}
+.steplist li::before{content:counter(n);position:absolute;left:.6rem;color:var(--code-num)}
+.steplist li code{background:none;border:0;padding:0;white-space:pre;font-size:inherit}
+.steplist .flag{margin-left:auto;padding:.1rem .55rem;border:1.5px solid transparent;border-radius:99px;font:700 .72rem/1.5 var(--f-body);white-space:nowrap}
+.steplist li.yes{border-color:var(--ok);box-shadow:inset 4px 0 0 var(--ok)}
+.steplist li.yes .flag{color:var(--ok);border-color:var(--ok)}
+.steplist li.no .flag{color:var(--err);border-color:var(--err)}
+.steplist li.skip .flag{color:var(--ink-3);border-color:var(--line)}
+.steplist li.run{border-color:var(--accent-bg);box-shadow:inset 4px 0 0 var(--accent-bg)}
+.steplist li.run .flag{color:var(--accent);border-color:var(--accent-bg)}
+.nm-empty{color:var(--ink-2);font-size:.92rem;align-self:center}
+.screen{margin:.9rem 0 0;padding:.6rem .9rem;border-radius:10px;background:var(--out-bg);color:var(--out-ink);font:.9rem/1.5 var(--f-mono);white-space:pre-wrap;overflow-wrap:anywhere}
+.screen small{display:block;font:700 .66rem/1.4 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--out-dim)}
+.bug-msg.plain{color:var(--out-ink)}
+
+.steplist .flag:empty{display:none}
+
+code.wrap{white-space:normal!important;overflow-wrap:anywhere}
+
+/* ===== Адаптив ===== */
+@media (max-width:1023px){
+  .shell{display:block}
+  main{max-width:780px;margin:0 auto}
+  .toc-btn{display:inline-flex}
+  .toc{position:fixed;z-index:45;top:var(--top);left:0;right:0;margin:0;max-height:calc(100vh - var(--top) - 3rem);padding:1rem;background:var(--paper);border-bottom:1.5px solid var(--ink);box-shadow:0 14px 30px rgba(0,0,0,.25);display:none}
+  .toc.open{display:block}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .themes button span{display:none}
+  .themes button{padding:0 .58rem}
+  .brand small{display:none}
+  .toc-btn span{display:none}
+  .code,.lab,.note,.lead{box-shadow:3px 3px 0 var(--shade)}
+  .note{box-shadow:3px 3px 0 var(--c)} .lab{box-shadow:3px 3px 0 var(--sea)} .lead{box-shadow:3px 3px 0 var(--accent-bg)}
+  .code pre{font-size:.8rem}
+  .code .l{padding-left:2.7rem}
+  .code .l::before{width:2rem}
+  .q .a{padding-left:.9rem}
+  th,td{padding:.5rem .65rem}
+}
+@media print{
+  .topbar,.progress,.toc,.copy,.lab,.quiz-bar,.mark{display:none!important}
+  .shell{display:block}
+  .q .a{display:block}
+  body{font-size:11pt}
+}
+
+
+/* ===== Только для этой лекции ===== */
+.ld-screen{margin:.9rem 0 0;padding:.6rem .9rem;border-radius:10px;background:var(--out-bg);color:var(--out-ink);font:.9rem/1.5 var(--f-mono)}
+.ld-screen small{display:block;font:700 .66rem/1.4 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--out-dim)}
+
+.lg-toggles{display:flex;flex-wrap:wrap;gap:.6rem}
+.lg-toggles button{min-height:42px;padding:.2rem .9rem;border:1.5px solid var(--ink);border-radius:10px;cursor:pointer;font:700 .95rem/1 var(--f-mono);color:var(--ink);box-shadow:3px 3px 0 var(--shade)}
+.lg-toggles button[aria-pressed="true"]{background:var(--ok-soft)}
+.lg-toggles button[aria-pressed="false"]{background:var(--err-soft)}
+.lg-toggles button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shade)}
+.lg-steps{list-style:none;margin:.9rem 0 0;padding:.7rem .9rem;border:1.5px solid var(--ink);border-radius:12px;background:var(--code-bg);font:600 .95rem/1.75 var(--f-mono);color:var(--t-o);overflow-x:auto;white-space:pre}
+.lg-steps li{margin:0}
+.lg-steps li:last-child{font-size:1.2rem}
+.lg-steps .T{color:var(--ok)} .lg-steps .F{color:var(--err)}
+.lg-table th,.lg-table td{text-align:center;font-family:var(--f-mono);padding:.35rem .5rem}
+.lg-table td.T{color:var(--ok);font-weight:700} .lg-table td.F{color:var(--err);font-weight:700}
+.lg-table tr.cur td{background:var(--sun-soft);color:var(--ink)}
+
+.sl-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,118px),1fr));gap:.7rem 1rem;margin-top:.8rem}
+.sl-ruler{display:flex;gap:4px;margin:1rem 0 0;padding:.6rem;border:1.5px dashed var(--ink-3);border-radius:12px;overflow-x:auto}
+.sl-cell{flex:none;display:grid;justify-items:center;gap:2px;min-width:2.3rem;font-family:var(--f-mono)}
+.sl-cell small{font-size:.7rem;color:var(--ink-2)}
+.sl-cell b{display:grid;place-items:center;width:2.2rem;height:2.4rem;border:1.5px solid var(--ink);border-radius:8px;background:var(--card);font-size:1.1rem;white-space:pre}
+.sl-cell.on b{background:var(--sun);color:#1D1B2E;box-shadow:2px 2px 0 var(--shade)}
+.sl-expr{margin:.9rem 0 0;padding:.6rem .9rem;border:1.5px solid var(--ink);border-radius:12px;background:var(--code-bg);font:600 1rem/1.5 var(--f-mono);color:var(--t-o);overflow-x:auto;white-space:pre}
+.sl-expr .res{color:var(--t-s)} .sl-expr .bad{color:var(--err)}
+.truth td,.truth th{text-align:center}
+</style>
+</head>
+<body>
+<div class="progress" aria-hidden="true"><i></i></div>
+
+<header class="topbar">
+  <button class="toc-btn" type="button" aria-expanded="false" aria-controls="toc" aria-label="Оглавление">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h8"/></svg>
+    <span>Оглавление</span>
+  </button>
+  <a class="brand" href="#top"><b>Py</b><span>Л2 · Условия и строки <small>· Модуль 1</small></span></a>
+  <div class="themes" role="group" aria-label="Тема оформления">
+    <button type="button" data-set="light" aria-pressed="false" title="Светлая тема" aria-label="Светлая тема">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.2 1.2M11.8 11.8 13 13M13 3l-1.2 1.2M4.2 11.8 3 13"/></svg><span>Светлая</span></button>
+    <button type="button" data-set="dark" aria-pressed="false" title="Тёмная тема" aria-label="Тёмная тема">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.6A6 6 0 0 1 6.4 2.5a6 6 0 1 0 7.1 7.1Z"/></svg><span>Тёмная</span></button>
+    <button type="button" data-set="system" aria-pressed="false" title="Как в системе" aria-label="Тема как в системе">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="8.5" rx="1.5"/><path d="M5.5 14h5M8 11v3"/></svg><span>Системная</span></button>
+  </div>
+</header>
+
+<div class="shell" id="top">
+<nav class="toc" id="toc" aria-label="Оглавление">
+  <h2>Оглавление</h2>
+  <ol>
+<li><a href="#start"><span class="toc-n">01</span><span>Старт: что умеем и план</span></a></li>
+<li><a href="#bool"><span class="toc-n">02</span><span>Правда и ложь: bool и сравнения</span></a></li>
+<li><a href="#if"><span class="toc-n">03</span><span>if и else: выбор из двух</span></a></li>
+<li><a href="#elif"><span class="toc-n">04</span><span>elif: выбор из нескольких</span></a></li>
+<li><a href="#logic"><span class="toc-n">05</span><span>and, or, not: несколько условий</span></a></li>
+<li><a href="#nested"><span class="toc-n">06</span><span>Вложенные условия и проверка ввода</span></a></li>
+<li><a href="#slices"><span class="toc-n">07</span><span>Строка по буквам: индексы и срезы</span></a></li>
+<li><a href="#methods"><span class="toc-n">08</span><span>Методы строк и оператор in</span></a></li>
+<li><a href="#club"><span class="toc-n">09</span><span>Практикум: фейсконтроль</span></a></li>
+<li><a href="#summary"><span class="toc-n">10</span><span>Итоги лекции</span></a></li>
+<li><a href="#quiz"><span class="toc-n">11</span><span>Проверь себя</span></a></li>
+  </ol>
+</nav>
+
+<main>
+<section class="hero">
+  <div class="hero-num" data-n="02" aria-hidden="true">02</div>
+  <p class="kicker"><span>Модуль 1 · Фундамент</span><span>Лекция 2 из 5</span></p>
+  <h1>Условия и строки <em>программа учится выбирать</em></h1>
+  <p class="lead">Сегодня напишем программу-вышибалу для клуба. Она спросит возраст и сама решит: пустить гостя, пустить ненадолго или отправить домой. А ещё научимся разбирать текст по буквам и понимать ответ человека, даже если он набрал его как попало.</p>
+  <ul class="chips"><li>около 60 минут</li><li>7 разделов теории</li><li>5 тренажёров</li><li>8 вопросов в конце</li></ul>
+</section>
+
+<!-- ============ СТАРТ ============ -->
+<section class="sec" id="start" data-toc="Старт: что умеем и план">
+  <header class="sec-head"><span class="sec-num">0</span><div><h2>С чего начинаем</h2><p>Что уже умеем и куда идём</p></div></header>
+  <p>В прошлой теме программа выполняла все строки подряд. Что бы ни ввёл человек, она делала одно и то же. Сегодня это изменится: программа начнёт выбирать, какие строки выполнять.</p>
+  <div class="cols">
+    <div class="tile b"><h3>Что уже умеем</h3><ul><li>выводить и спрашивать: <code>print()</code>, <code>input()</code>;</li><li>превращать типы: <code>int()</code>, <code>float()</code>, <code>str()</code>;</li><li>считать, включая <code>//</code> и <code>%</code>;</li><li>склеивать и повторять строки, мерить их через <code>len()</code>;</li><li>выводить значения в f-строках.</li></ul></div>
+    <div class="tile c"><h3>Что будем уметь через час</h3><ul><li>сравнивать значения;</li><li>выполнять разные команды в разных случаях;</li><li>объединять несколько условий;</li><li>проверять, что ввод правильный;</li><li>доставать из строки буквы и куски;</li><li>приводить ввод к одному виду.</li></ul></div>
+  </div>
+  <h3>План занятия</h3>
+  <ol class="plan">
+    <li><div><b>Правда и ложь.</b> <span>Тип bool и операторы сравнения.</span></div></li>
+    <li><div><b>if и else.</b> <span>Выбор из двух вариантов. Отступы.</span></div></li>
+    <li><div><b>elif.</b> <span>Выбор из нескольких вариантов.</span></div></li>
+    <li><div><b>and, or, not.</b> <span>Несколько условий сразу.</span></div></li>
+    <li><div><b>Вложенные условия.</b> <span>Проверка ввода и случайные числа.</span></div></li>
+    <li><div><b>Индексы и срезы.</b> <span>Строка по буквам.</span></div></li>
+    <li><div><b>Методы строк.</b> <span>Как понять ответ человека.</span></div></li>
+    <li><div><b>Практикум.</b> <span>«Фейсконтроль» в виде задания с контрольной.</span></div></li>
+  </ol>
+  <div class="note kr"><span class="tag">На КР</span>
+    <p>В программе с контрольной почти всегда есть меню: человек вводит номер пункта, а программа выбирает действие. Это и есть условия. Вторая половина темы — строки — нужна, чтобы программа не ломалась от лишнего пробела или большой буквы в ответе.</p>
+  </div>
+</section>
+
+<!-- ============ 1 ============ -->
+<section class="sec" id="bool" data-toc="Правда и ложь: bool и сравнения">
+  <header class="sec-head"><span class="sec-num">1</span><div><h2>Правда и ложь</h2><p>Тип bool и сравнения</p></div></header>
+  <p>Чтобы выбирать, программа должна уметь задавать вопросы с ответом «да» или «нет». Для таких ответов есть отдельный тип — <span class="term">bool</span>, логический. У него всего два значения: <code>True</code> (правда) и <code>False</code> (ложь). Оба пишутся с большой буквы.</p>
+  <p>Вопрос задают <span class="term">операторы сравнения</span>. Результат любого сравнения — значение типа <code>bool</code>.</p>
+  <div class="tbl-wrap scroll" tabindex="0"><table class="evals"><thead><tr><th>Выражение</th><th>Результат</th><th>Пояснение</th></tr></thead><tbody><tr><td><code><span class="t-n">5</span> &gt; <span class="t-n">3</span></code></td><td><code class="res">True</code></td><td>Больше.</td></tr><tr><td><code><span class="t-n">5</span> &lt; <span class="t-n">3</span></code></td><td><code class="res">False</code></td><td>Меньше.</td></tr><tr><td><code><span class="t-n">5</span> &gt;= <span class="t-n">5</span></code></td><td><code class="res">True</code></td><td>Больше или равно.</td></tr><tr><td><code><span class="t-n">5</span> &lt;= <span class="t-n">4</span></code></td><td><code class="res">False</code></td><td>Меньше или равно.</td></tr><tr><td><code><span class="t-n">5</span> == <span class="t-n">5</span></code></td><td><code class="res">True</code></td><td>Равно. Два знака!</td></tr><tr><td><code><span class="t-n">5</span> != <span class="t-n">5</span></code></td><td><code class="res">False</code></td><td>Не равно.</td></tr><tr><td><code><span class="t-n">7</span> % <span class="t-n">2</span> == <span class="t-n">1</span></code></td><td><code class="res">True</code></td><td>Сначала арифметика, потом сравнение: 7 — нечётное?</td></tr></tbody></table></div>
+  <div class="note warn"><span class="tag">Ловушка</span>
+    <p>Один знак <code>=</code> — это присваивание: «пусть имя указывает на значение». Два знака <code>==</code> — это вопрос: «равны ли значения?». Перепутать их — самая частая ошибка в этой теме.</p>
+  </div>
+  <p>Результат сравнения можно сохранить в переменную, как любое другое значение.</p>
+  <figure class="code"><figcaption><span class="code-name">bool.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">age</span> = <span class="t-n">19</span></span>
+<span class="l"><span class="t-v">is_adult</span> = <span class="t-v">age</span> &gt;= <span class="t-n">18</span>           <span class="t-m"># в переменную попадает ответ</span></span>
+<span class="l"><span class="t-f">print</span>(<span class="t-v">is_adult</span>)</span>
+<span class="l"><span class="t-f">print</span>(<span class="t-t">type</span>(<span class="t-v">is_adult</span>))</span>
+<span class="l"></span>
+<span class="l"><span class="t-v">points</span> = <span class="t-n">87</span></span>
+<span class="l"><span class="t-f">print</span>(<span class="t-n">0</span> &lt;= <span class="t-v">points</span> &lt;= <span class="t-n">100</span>)      <span class="t-m"># points между 0 и 100?</span></span></code></pre><div class="out"><div class="out-label"><span>Что на экране</span></div><pre class="scroll" tabindex="0">True
+&lt;class 'bool'&gt;
+True</pre></div></figure>
+  <p>Двойное сравнение <code>0 &lt;= points &lt;= 100</code> читается как в математике: «points не меньше 0 и не больше 100». Так удобно проверять, что число попало в нужный промежуток.</p>
+
+  <h3>Строки тоже можно сравнивать</h3>
+  <p>На равенство строки сравниваются символ за символом. Важно всё: большие буквы, пробелы, каждая точка.</p>
+  <div class="tbl-wrap scroll" tabindex="0"><table class="evals"><thead><tr><th>Выражение</th><th>Результат</th><th>Пояснение</th></tr></thead><tbody><tr><td><code><span class="t-s">"да"</span> == <span class="t-s">"да"</span></code></td><td><code class="res">True</code></td><td>Одинаковые.</td></tr><tr><td><code><span class="t-s">"да"</span> == <span class="t-s">"Да"</span></code></td><td><code class="res">False</code></td><td>Разные: большая и маленькая буква — это разные символы.</td></tr><tr><td><code><span class="t-s">"да"</span> == <span class="t-s">"да "</span></code></td><td><code class="res">False</code></td><td>Разные: во второй строке в конце пробел.</td></tr><tr><td><code><span class="t-s">"abc"</span> &lt; <span class="t-s">"abd"</span></code></td><td><code class="res">True</code></td><td>Больше и меньше для строк — это порядок как в словаре.</td></tr><tr><td><code><span class="t-s">"10"</span> &gt; <span class="t-s">"9"</span></code></td><td><code class="res">False</code></td><td>Ложь! Строки сравниваются по первому символу: «1» стоит раньше «9».</td></tr><tr><td><code><span class="t-n">10</span> &gt; <span class="t-n">9</span></code></td><td><code class="res">True</code></td><td>А числа сравниваются как числа.</td></tr></tbody></table></div>
+  <p>Отсюда правило: числа сравниваем как числа. Если значение пришло из <code>input()</code>, сначала превращаем его через <code>int()</code> или <code>float()</code>.</p>
+  <div class="recap"><h3>Итог раздела</h3><ul>
+    <li>Сравнение даёт <code>True</code> или <code>False</code>. Это тип <code>bool</code>.</li>
+    <li><code>==</code> спрашивает «равно ли?», <code>=</code> присваивает.</li>
+    <li>Строки равны, только если совпадает каждый символ.</li>
+  </ul></div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="sec" id="if" data-toc="if и else: выбор из двух">
+  <header class="sec-head"><span class="sec-num">2</span><div><h2>if и else</h2><p>Выбор из двух вариантов</p></div></header>
+  <p>Команда <code>if</code> переводится как «если». После неё пишут <span class="term">условие</span> — выражение, которое даёт <code>True</code> или <code>False</code>. Если условие истинно, выполняются строки под <code>if</code>. Если ложно — строки под <code>else</code> («иначе»).</p>
+  <figure class="code"><figcaption><span class="code-name">club1.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">age</span> = <span class="t-t">int</span>(<span class="t-f">input</span>(<span class="t-s">"Сколько тебе лет? "</span>))</span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">age</span> &gt;= <span class="t-n">18</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Проходи!"</span>)</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Гардероб слева."</span>)</span>
+<span class="l"><span class="t-c">else</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Извини, вход только с 18 лет."</span>)</span>
+<span class="l"><span class="t-f">print</span>(<span class="t-s">"Следующий!"</span>)</span></code></pre><div class="out"><div class="out-label"><span>Запуск 1</span><span class="out-legend"><span class="typed">так</span> выделен ввод с клавиатуры</span></div><pre class="scroll" tabindex="0">Сколько тебе лет? <span class="typed">20</span>
+Проходи!
+Гардероб слева.
+Следующий!</pre></div><div class="out"><div class="out-label"><span>Запуск 2</span></div><pre class="scroll" tabindex="0">Сколько тебе лет? <span class="typed">15</span>
+Извини, вход только с 18 лет.
+Следующий!</pre></div></figure>
+  <p>Разберём, как это устроено.</p>
+  <ul>
+    <li><strong>Двоеточие.</strong> Строка с <code>if</code> и строка с <code>else</code> заканчиваются двоеточием. Оно говорит: «дальше идёт блок».</li>
+    <li><strong>Блок.</strong> <span class="term">Блок</span> — это несколько строк, которые выполняются вместе. В Python блок задаётся отступом: каждая его строка начинается с четырёх пробелов. В Spyder отступ ставит клавиша <kbd>Tab</kbd>.</li>
+    <li><strong>Конец блока.</strong> Блок заканчивается там, где заканчиваются отступы. Строка <code>print("Следующий!")</code> стоит без отступа, поэтому выполняется в любом случае.</li>
+  </ul>
+  <p>Ветка <code>else</code> не обязательна. Если её нет и условие ложно, программа просто идёт дальше.</p>
+
+  <h3>Две ошибки, которые будут у каждого</h3>
+  <p>Забыли отступ — Python не понимает, где блок.</p>
+  <figure class="code"><figcaption><span class="code-name">indent.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">age</span> = <span class="t-n">20</span></span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">age</span> &gt;= <span class="t-n">18</span>:</span>
+<span class="l"><span class="t-f">print</span>(<span class="t-s">"Проходи!"</span>)</span></code></pre><div class="out err"><div class="out-label"><span>Ошибка</span></div><pre class="scroll" tabindex="0">  File "indent.py", line 3
+    print("Проходи!")
+    ^^^^^
+IndentationError: expected an indented block after 'if' statement on line 2</pre></div></figure>
+  <p>Забыли двоеточие — Python подсказывает, чего он ждал.</p>
+  <figure class="code"><figcaption><span class="code-name">colon.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">age</span> = <span class="t-n">20</span></span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">age</span> &gt;= <span class="t-n">18</span></span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Проходи!"</span>)</span></code></pre><div class="out err"><div class="out-label"><span>Ошибка</span></div><pre class="scroll" tabindex="0">  File "colon.py", line 2
+    if age &gt;= 18
+                ^
+SyntaxError: expected ':'</pre></div></figure>
+  <div class="recap"><h3>Итог раздела</h3><ul>
+    <li><code>if условие:</code> — блок выполняется, только если условие истинно.</li>
+    <li><code>else:</code> — блок на случай, когда условие ложно.</li>
+    <li>Блок — это строки с отступом в четыре пробела. В конце заголовка — двоеточие.</li>
+  </ul></div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="sec" id="elif" data-toc="elif: выбор из нескольких">
+  <header class="sec-head"><span class="sec-num">3</span><div><h2>elif</h2><p>Выбор из нескольких вариантов</p></div></header>
+  <p>Вариантов часто больше двух. Для этого есть <code>elif</code> — сокращение от «else if», «иначе если». Получается лестница условий.</p>
+  <figure class="code"><figcaption><span class="code-name">hello_time.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">hour</span> = <span class="t-t">int</span>(<span class="t-f">input</span>(<span class="t-s">"Который час (0–23)? "</span>))</span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">hour</span> &lt; <span class="t-n">6</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Доброй ночи!"</span>)</span>
+<span class="l"><span class="t-c">elif</span> <span class="t-v">hour</span> &lt; <span class="t-n">12</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Доброе утро!"</span>)</span>
+<span class="l"><span class="t-c">elif</span> <span class="t-v">hour</span> &lt; <span class="t-n">18</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Добрый день!"</span>)</span>
+<span class="l"><span class="t-c">else</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Добрый вечер!"</span>)</span></code></pre><div class="out"><div class="out-label"><span>Запуск 1</span><span class="out-legend"><span class="typed">так</span> выделен ввод с клавиатуры</span></div><pre class="scroll" tabindex="0">Который час (0–23)? <span class="typed">9</span>
+Доброе утро!</pre></div><div class="out"><div class="out-label"><span>Запуск 2</span></div><pre class="scroll" tabindex="0">Который час (0–23)? <span class="typed">15</span>
+Добрый день!</pre></div><div class="out"><div class="out-label"><span>Запуск 3</span></div><pre class="scroll" tabindex="0">Который час (0–23)? <span class="typed">23</span>
+Добрый вечер!</pre></div></figure>
+  <p>Python идёт по лестнице сверху вниз. Он проверяет условия по очереди и выполняет <strong>первую</strong> ветку, условие которой истинно. Остальные ветки он уже не проверяет. Ветка <code>else</code> срабатывает, если не подошло ни одно условие.</p>
+  <p>Поэтому во второй строке лестницы не нужно писать «от 6 до 12». Раз мы дошли до <code>elif hour &lt; 12</code>, значит, первое условие было ложным и час уже не меньше 6.</p>
+
+  <div class="lab" id="w-ladder">
+    <div class="lab-head"><b>Тренажёр 1</b><h3>Лестница elif</h3></div>
+    <div class="lab-body">
+      <p>Двигай ползунок. Следи, какие условия Python проверяет и на какой ветке останавливается.</p>
+      <label class="field"><span>Который час: hour = <output id="ld-out" class="mono" style="font-weight:700;color:var(--ink);font-size:1.05rem">15</output></span><input type="range" id="ld-hour" min="0" max="23" value="15"></label>
+      <ol class="steplist" id="ld-code" aria-label="Программа">
+        <li data-limit="6"><code class="py"><span class="t-c">if</span> <span class="t-v">hour</span> &lt; <span class="t-n">6</span>:</code><span class="flag"></span></li>
+        <li data-branch="0"><code class="py">    <span class="t-f">print</span>(<span class="t-s">"Доброй ночи!"</span>)</code><span class="flag"></span></li>
+        <li data-limit="12"><code class="py"><span class="t-c">elif</span> <span class="t-v">hour</span> &lt; <span class="t-n">12</span>:</code><span class="flag"></span></li>
+        <li data-branch="1"><code class="py">    <span class="t-f">print</span>(<span class="t-s">"Доброе утро!"</span>)</code><span class="flag"></span></li>
+        <li data-limit="18"><code class="py"><span class="t-c">elif</span> <span class="t-v">hour</span> &lt; <span class="t-n">18</span>:</code><span class="flag"></span></li>
+        <li data-branch="2"><code class="py">    <span class="t-f">print</span>(<span class="t-s">"Добрый день!"</span>)</code><span class="flag"></span></li>
+        <li data-limit="99"><code class="py"><span class="t-c">else</span>:</code><span class="flag"></span></li>
+        <li data-branch="3"><code class="py">    <span class="t-f">print</span>(<span class="t-s">"Добрый вечер!"</span>)</code><span class="flag"></span></li>
+      </ol>
+      <div class="ld-screen"><small>Что на экране</small><span id="ld-screen"></span></div>
+      <p class="say" id="ld-say" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <h3>Порядок условий важен</h3>
+  <p>Раз выполняется первая подходящая ветка, условия нужно ставить в правильном порядке. Вот лестница, в которой порядок перепутан.</p>
+  <figure class="code"><figcaption><span class="code-name">order.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">points</span> = <span class="t-n">95</span></span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">points</span> &gt;= <span class="t-n">50</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"сдано"</span>)</span>
+<span class="l"><span class="t-c">elif</span> <span class="t-v">points</span> &gt;= <span class="t-n">90</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"отлично"</span>)           <span class="t-m"># сюда программа не попадёт никогда</span></span></code></pre><div class="out"><div class="out-label"><span>Что на экране</span></div><pre class="scroll" tabindex="0">сдано</pre></div></figure>
+  <p>У студента 95 баллов, а программа говорит просто «сдано». Условие <code>points &gt;= 50</code> истинно для 95, и до второй ветки дело не доходит. Правило: в лестнице сначала идут самые «строгие» условия.</p>
+
+  <h3>Несколько if подряд — это не лестница</h3>
+  <p>Если написать несколько отдельных <code>if</code>, Python проверит каждое условие. Сработать могут сразу несколько.</p>
+  <figure class="code"><figcaption><span class="code-name">many_ifs.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">number</span> = <span class="t-n">12</span></span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">number</span> % <span class="t-n">2</span> == <span class="t-n">0</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"делится на 2"</span>)</span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">number</span> % <span class="t-n">3</span> == <span class="t-n">0</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"делится на 3"</span>)</span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">number</span> % <span class="t-n">5</span> == <span class="t-n">0</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"делится на 5"</span>)</span></code></pre><div class="out"><div class="out-label"><span>Что на экране</span></div><pre class="scroll" tabindex="0">делится на 2
+делится на 3</pre></div></figure>
+  <div class="note"><span class="tag">Как выбрать</span>
+    <p>Нужен ровно один ответ из нескольких — пиши <code>if / elif / else</code>. Каждую проверку нужно сделать отдельно, и ответов может быть несколько — пиши несколько <code>if</code> подряд.</p>
+  </div>
+  <div class="recap"><h3>Итог раздела</h3><ul>
+    <li>Лестница <code>if / elif / else</code> выполняет ровно одну ветку — первую подходящую.</li>
+    <li>Порядок условий в лестнице важен.</li>
+    <li>Отдельные <code>if</code> проверяются все, независимо друг от друга.</li>
+  </ul></div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="sec" id="logic" data-toc="and, or, not: несколько условий">
+  <header class="sec-head"><span class="sec-num">4</span><div><h2>and, or, not</h2><p>Несколько условий сразу</p></div></header>
+  <p>В клуб пускают, если гостю есть 18 лет <strong>и</strong> у него есть билет. Это два условия, и нужны оба. Условия соединяют <span class="term">логические операторы</span>.</p>
+  <div class="tbl-wrap scroll" tabindex="0"><table class="truth">
+    <thead><tr><th>a</th><th>b</th><th>a and b</th><th>a or b</th><th>not a</th></tr></thead>
+    <tbody>
+      <tr><td><code>True</code></td><td><code>True</code></td><td><code>True</code></td><td><code>True</code></td><td><code>False</code></td></tr>
+      <tr><td><code>True</code></td><td><code>False</code></td><td><code>False</code></td><td><code>True</code></td><td><code>False</code></td></tr>
+      <tr><td><code>False</code></td><td><code>True</code></td><td><code>False</code></td><td><code>True</code></td><td><code>True</code></td></tr>
+      <tr><td><code>False</code></td><td><code>False</code></td><td><code>False</code></td><td><code>False</code></td><td><code>True</code></td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><code>and</code> («и») — правда, только если верны <strong>оба</strong> условия.</li>
+    <li><code>or</code> («или») — правда, если верно <strong>хотя бы одно</strong>.</li>
+    <li><code>not</code> («не») — переворачивает ответ.</li>
+  </ul>
+  <figure class="code"><figcaption><span class="code-name">club2.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">age</span> = <span class="t-t">int</span>(<span class="t-f">input</span>(<span class="t-s">"Сколько тебе лет? "</span>))</span>
+<span class="l"><span class="t-v">has_ticket</span> = <span class="t-f">input</span>(<span class="t-s">"Билет есть? (да/нет) "</span>) == <span class="t-s">"да"</span></span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">age</span> &gt;= <span class="t-n">18</span> <span class="t-k">and</span> <span class="t-v">has_ticket</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Проходи!"</span>)</span>
+<span class="l"><span class="t-c">else</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Не могу пустить."</span>)</span></code></pre><div class="out"><div class="out-label"><span>Запуск 1</span><span class="out-legend"><span class="typed">так</span> выделен ввод с клавиатуры</span></div><pre class="scroll" tabindex="0">Сколько тебе лет? <span class="typed">20</span>
+Билет есть? (да/нет) <span class="typed">да</span>
+Проходи!</pre></div><div class="out"><div class="out-label"><span>Запуск 2</span></div><pre class="scroll" tabindex="0">Сколько тебе лет? <span class="typed">20</span>
+Билет есть? (да/нет) <span class="typed">нет</span>
+Не могу пустить.</pre></div><div class="out"><div class="out-label"><span>Запуск 3</span></div><pre class="scroll" tabindex="0">Сколько тебе лет? <span class="typed">16</span>
+Билет есть? (да/нет) <span class="typed">да</span>
+Не могу пустить.</pre></div></figure>
+  <p>Во второй строке справа стоит сравнение. В переменную <code>has_ticket</code> попадает его результат: <code>True</code> или <code>False</code>. Такую переменную можно ставить в условие без всякого <code>==</code>.</p>
+
+  <h3>Условия с остатком от деления</h3>
+  <p>«Делится на 3» в Python записывают как «остаток от деления на 3 равен нулю». Такие проверки удобно соединять.</p>
+  <figure class="code"><figcaption><span class="code-name">divisible.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">number</span> = <span class="t-t">int</span>(<span class="t-f">input</span>(<span class="t-s">"Число: "</span>))</span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">number</span> % <span class="t-n">2</span> == <span class="t-n">0</span> <span class="t-k">and</span> <span class="t-v">number</span> % <span class="t-n">3</span> == <span class="t-n">0</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Делится и на 2, и на 3"</span>)</span>
+<span class="l"><span class="t-c">elif</span> <span class="t-v">number</span> % <span class="t-n">2</span> == <span class="t-n">0</span> <span class="t-k">or</span> <span class="t-v">number</span> % <span class="t-n">3</span> == <span class="t-n">0</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Делится на 2 или на 3, но не на оба сразу"</span>)</span>
+<span class="l"><span class="t-c">else</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Не делится ни на 2, ни на 3"</span>)</span></code></pre><div class="out"><div class="out-label"><span>Запуск 1</span><span class="out-legend"><span class="typed">так</span> выделен ввод с клавиатуры</span></div><pre class="scroll" tabindex="0">Число: <span class="typed">12</span>
+Делится и на 2, и на 3</pre></div><div class="out"><div class="out-label"><span>Запуск 2</span></div><pre class="scroll" tabindex="0">Число: <span class="typed">9</span>
+Делится на 2 или на 3, но не на оба сразу</pre></div><div class="out"><div class="out-label"><span>Запуск 3</span></div><pre class="scroll" tabindex="0">Число: <span class="typed">7</span>
+Не делится ни на 2, ни на 3</pre></div></figure>
+
+  <h3>Порядок действий</h3>
+  <p>Сначала выполняются сравнения, потом <code>not</code>, потом <code>and</code>, и в самом конце <code>or</code>. Скобки меняют порядок. Если сомневаешься — ставь скобки, с ними условие ещё и легче читать.</p>
+  <div class="tbl-wrap scroll" tabindex="0"><table class="evals"><thead><tr><th>Выражение</th><th>Результат</th><th>Пояснение</th></tr></thead><tbody><tr><td><code><span class="t-k">True</span> <span class="t-k">or</span> <span class="t-k">False</span> <span class="t-k">and</span> <span class="t-k">False</span></code></td><td><code class="res">True</code></td><td>Сначала and: False and False даёт False. Потом True or False.</td></tr><tr><td><code>(<span class="t-k">True</span> <span class="t-k">or</span> <span class="t-k">False</span>) <span class="t-k">and</span> <span class="t-k">False</span></code></td><td><code class="res">False</code></td><td>Скобки первыми: True and False.</td></tr><tr><td><code><span class="t-k">not</span> <span class="t-n">5</span> &gt; <span class="t-n">3</span></code></td><td><code class="res">False</code></td><td>Сначала сравнение: 5 > 3 даёт True, потом not.</td></tr></tbody></table></div>
+  <p>Двойное сравнение — это короткая запись для <code>and</code>. «Число вне промежутка» записывают через <code>or</code>.</p>
+  <div class="tbl-wrap scroll" tabindex="0"><table class="evals"><thead><tr><th>Выражение</th><th>Результат</th><th>Пояснение</th></tr></thead><tbody><tr><td><code><span class="t-n">0</span> &lt;= <span class="t-v">x</span> &lt;= <span class="t-n">100</span></code></td><td><code class="res">False</code></td><td>То же, что 0 <= x and x <= 100.</td></tr><tr><td><code><span class="t-v">x</span> &lt; <span class="t-n">0</span> <span class="t-k">or</span> <span class="t-v">x</span> &gt; <span class="t-n">100</span></code></td><td><code class="res">True</code></td><td>Число вне промежутка от 0 до 100.</td></tr></tbody></table></div>
+  <div class="note warn"><span class="tag">Ловушка</span>
+    <p>По-русски мы говорим: «если ответ равен "да" или "yes"». Но запись <code>answer == "да" or "yes"</code> неверна: Python считает её всегда истинной. С каждой стороны от <code>or</code> должно стоять полное сравнение: <code>answer == "да" or answer == "yes"</code>.</p>
+  </div>
+
+  <div class="lab" id="w-logic">
+    <div class="lab-head"><b>Тренажёр 2</b><h3>Логическое выражение по шагам</h3></div>
+    <div class="lab-body">
+      <p>Это задание со слайда лектора: при каких x, y и z выражение истинно? Щёлкай по кнопкам, чтобы менять значения.</p>
+      <div class="lg-toggles" role="group" aria-label="Значения переменных">
+        <button type="button" data-v="x" aria-pressed="true">x = True</button>
+        <button type="button" data-v="y" aria-pressed="false">y = False</button>
+        <button type="button" data-v="z" aria-pressed="true">z = True</button>
+      </div>
+      <ol class="lg-steps" id="lg-steps" aria-live="polite"></ol>
+      <div class="tbl-wrap scroll" tabindex="0"><table class="lg-table">
+        <thead><tr><th>x</th><th>y</th><th>z</th><th>Результат</th></tr></thead>
+        <tbody id="lg-rows"></tbody>
+      </table></div>
+      <p class="say" id="lg-say"></p>
+    </div>
+  </div>
+
+  <div class="note"><span class="tag">Из слайдов лектора</span>
+    <p>Кроме <code>==</code> есть оператор <code>is</code>. Он проверяет не «равны ли значения», а «один ли это объект». Числа <code>1</code> и <code>1.0</code> равны, но это два разных объекта: для них <code>==</code> даёт <code>True</code>, а <code>is</code> — <code>False</code>. Для сравнения значений всегда бери <code>==</code>.</p>
+  </div>
+  <div class="recap"><h3>Итог раздела</h3><ul>
+    <li><code>and</code> — оба условия, <code>or</code> — хотя бы одно, <code>not</code> — наоборот.</li>
+    <li>С каждой стороны от <code>and</code> и <code>or</code> стоит полное условие.</li>
+    <li>Порядок: сравнения, <code>not</code>, <code>and</code>, <code>or</code>. Скобки делают условие понятнее.</li>
+  </ul></div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="sec" id="nested" data-toc="Вложенные условия и проверка ввода">
+  <header class="sec-head"><span class="sec-num">5</span><div><h2>Вложенные условия</h2><p>Проверка ввода и случайные числа</p></div></header>
+  <p>Внутри блока можно написать ещё один <code>if</code>. Он называется <span class="term">вложенным</span>. Его блок сдвигается ещё на четыре пробела.</p>
+  <p>Главное применение — проверка ввода. Человек может ввести что угодно: ноль, отрицательное число, лишний пробел. Хорошая программа сначала отсекает плохой ввод и только потом считает.</p>
+  <figure class="code"><figcaption><span class="code-name">share.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">total</span> = <span class="t-t">float</span>(<span class="t-f">input</span>(<span class="t-s">"Сумма счёта: "</span>))</span>
+<span class="l"><span class="t-v">people</span> = <span class="t-t">int</span>(<span class="t-f">input</span>(<span class="t-s">"Сколько человек? "</span>))</span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">people</span> &lt;= <span class="t-n">0</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Ошибка: людей должно быть больше нуля"</span>)</span>
+<span class="l"><span class="t-c">else</span>:</span>
+<span class="l">    <span class="t-v">share</span> = <span class="t-v">total</span> / <span class="t-v">people</span></span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-k">f</span><span class="t-s">"С каждого: </span><span class="t-k">{</span><span class="t-v">share</span><span class="t-k">:.2f}</span><span class="t-s"> евро"</span>)</span>
+<span class="l">    <span class="t-c">if</span> <span class="t-v">share</span> &gt; <span class="t-n">50</span>:</span>
+<span class="l">        <span class="t-f">print</span>(<span class="t-s">"Дороговато!"</span>)</span></code></pre><div class="out"><div class="out-label"><span>Запуск 1</span><span class="out-legend"><span class="typed">так</span> выделен ввод с клавиатуры</span></div><pre class="scroll" tabindex="0">Сумма счёта: <span class="typed">90</span>
+Сколько человек? <span class="typed">0</span>
+Ошибка: людей должно быть больше нуля</pre></div><div class="out"><div class="out-label"><span>Запуск 2</span></div><pre class="scroll" tabindex="0">Сумма счёта: <span class="typed">120</span>
+Сколько человек? <span class="typed">2</span>
+С каждого: 60.00 евро
+Дороговато!</pre></div></figure>
+  <p>В прошлой теме такая программа падала с ошибкой <code>ZeroDivisionError</code>. Теперь деление стоит в ветке <code>else</code> и выполняется только с правильным числом людей.</p>
+
+  <h3>Флаг: запоминаем результат нескольких проверок</h3>
+  <p>Иногда проверок несколько, и о каждой проблеме нужно сообщить отдельно. А в конце — сказать, всё ли в порядке. Для этого заводят переменную типа <code>bool</code>. Её называют <span class="term">флагом</span>. Сначала флаг «поднят». Каждая проверка, которая нашла проблему, его «опускает».</p>
+  <figure class="code"><figcaption><span class="code-name">baggage.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">length</span> = <span class="t-t">int</span>(<span class="t-f">input</span>(<span class="t-s">"Длина сумки, см: "</span>))</span>
+<span class="l"><span class="t-v">weight</span> = <span class="t-t">float</span>(<span class="t-f">input</span>(<span class="t-s">"Вес сумки, кг: "</span>))</span>
+<span class="l"><span class="t-v">is_allowed</span> = <span class="t-k">True</span>                  <span class="t-m"># пока проблем не нашли</span></span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">length</span> &gt; <span class="t-n">55</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Сумка слишком длинная"</span>)</span>
+<span class="l">    <span class="t-v">is_allowed</span> = <span class="t-k">False</span></span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">weight</span> &gt; <span class="t-n">8</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Сумка слишком тяжёлая"</span>)</span>
+<span class="l">    <span class="t-v">is_allowed</span> = <span class="t-k">False</span></span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">is_allowed</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Можно брать в салон"</span>)</span></code></pre><div class="out"><div class="out-label"><span>Запуск 1</span><span class="out-legend"><span class="typed">так</span> выделен ввод с клавиатуры</span></div><pre class="scroll" tabindex="0">Длина сумки, см: <span class="typed">60</span>
+Вес сумки, кг: <span class="typed">9.5</span>
+Сумка слишком длинная
+Сумка слишком тяжёлая</pre></div><div class="out"><div class="out-label"><span>Запуск 2</span></div><pre class="scroll" tabindex="0">Длина сумки, см: <span class="typed">50</span>
+Вес сумки, кг: <span class="typed">7</span>
+Можно брать в салон</pre></div></figure>
+  <p>Здесь три отдельных <code>if</code>, а не лестница: сумка может быть и длинной, и тяжёлой сразу. Последняя строка с условием читается почти по-русски: «если разрешено».</p>
+
+  <h3>Случайные числа</h3>
+  <p>Для игр нужен случай. Его даёт модуль <code>random</code>. Функция <code>random.randint(a, b)</code> возвращает случайное целое число от <code>a</code> до <code>b</code>. Обе границы входят.</p>
+  <figure class="code"><figcaption><span class="code-name">dice.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-c">import</span> <span class="t-t">random</span></span>
+<span class="l"></span>
+<span class="l"><span class="t-v">dice</span> = <span class="t-t">random</span>.<span class="t-f">randint</span>(<span class="t-n">1</span>, <span class="t-n">6</span>)        <span class="t-m"># бросок кубика: от 1 до 6</span></span>
+<span class="l"><span class="t-f">print</span>(<span class="t-s">"Выпало:"</span>, <span class="t-v">dice</span>)</span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">dice</span> == <span class="t-n">6</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Шестёрка! Ходи ещё раз."</span>)</span>
+<span class="l"><span class="t-c">else</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Ход переходит дальше."</span>)</span></code></pre><div class="out"><div class="out-label"><span>Что на экране</span></div><pre class="scroll" tabindex="0">Выпало: 5
+Ход переходит дальше.</pre></div></figure>
+  <p>У тебя выпадет другое число, и при каждом запуске оно будет новым.</p>
+  <div class="recap"><h3>Итог раздела</h3><ul>
+    <li>Вложенный <code>if</code> — это <code>if</code> внутри блока, с двойным отступом.</li>
+    <li>Сначала отсекаем неправильный ввод, потом считаем.</li>
+    <li>Флаг — переменная <code>bool</code>, которая помнит результат проверок.</li>
+    <li><code>random.randint(1, 6)</code> — случайное целое от 1 до 6.</li>
+  </ul></div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="sec" id="slices" data-toc="Строка по буквам: индексы и срезы">
+  <header class="sec-head"><span class="sec-num">6</span><div><h2>Строка по буквам</h2><p>Индексы и срезы</p></div></header>
+  <p>Строка — это цепочка символов. У каждого символа есть номер. Этот номер называется <span class="term">индексом</span>. Главная неожиданность: счёт начинается с нуля.</p>
+  <div class="tbl-wrap scroll" tabindex="0"><table class="evals"><thead><tr><th>Выражение</th><th>Результат</th><th>Пояснение</th></tr></thead><tbody><tr><td><code><span class="t-v">word</span>[<span class="t-n">0</span>]</code></td><td><code class="res">'П'</code></td><td>Первый символ. Его индекс — 0.</td></tr><tr><td><code><span class="t-v">word</span>[<span class="t-n">1</span>]</code></td><td><code class="res">'и'</code></td><td>Второй символ.</td></tr><tr><td><code><span class="t-v">word</span>[<span class="t-n">4</span>]</code></td><td><code class="res">'н'</code></td><td>Последний: в слове 5 символов, индексы от 0 до 4.</td></tr><tr><td><code><span class="t-v">word</span>[-<span class="t-n">1</span>]</code></td><td><code class="res">'н'</code></td><td>Отрицательный индекс считает с конца: -1 — последний.</td></tr><tr><td><code><span class="t-v">word</span>[-<span class="t-n">2</span>]</code></td><td><code class="res">'о'</code></td><td>Предпоследний.</td></tr><tr><td><code><span class="t-f">len</span>(<span class="t-v">word</span>)</code></td><td><code class="res">5</code></td><td>Длина строки.</td></tr><tr><td><code><span class="t-v">word</span>[<span class="t-n">5</span>]</code></td><td><code class="res bad">IndexError</code></td><td>Ошибка: символа с индексом 5 нет.</td></tr></tbody></table></div>
+  <p>Последняя строка таблицы — ошибка <code>IndexError: string index out of range</code>. Она значит: «такого номера в строке нет».</p>
+
+  <h3>Срез: кусок строки</h3>
+  <p><span class="term">Срез</span> вырезает из строки кусок. В квадратных скобках через двоеточие пишут, откуда начать и где остановиться. Символ с номером «стоп» в срез <strong>не входит</strong>.</p>
+  <div class="tbl-wrap scroll" tabindex="0"><table class="evals"><thead><tr><th>Выражение</th><th>Результат</th><th>Пояснение</th></tr></thead><tbody><tr><td><code><span class="t-v">word</span>[<span class="t-n">0</span>:<span class="t-n">3</span>]</code></td><td><code class="res">'Пит'</code></td><td>С индекса 0 до индекса 3, не включая 3.</td></tr><tr><td><code><span class="t-v">word</span>[<span class="t-n">1</span>:<span class="t-n">4</span>]</code></td><td><code class="res">'ито'</code></td><td>Символы с индексами 1, 2, 3.</td></tr><tr><td><code><span class="t-v">word</span>[:<span class="t-n">2</span>]</code></td><td><code class="res">'Пи'</code></td><td>Начало можно не писать: от самого начала.</td></tr><tr><td><code><span class="t-v">word</span>[<span class="t-n">2</span>:]</code></td><td><code class="res">'тон'</code></td><td>Конец можно не писать: до самого конца.</td></tr><tr><td><code><span class="t-v">word</span>[-<span class="t-n">3</span>:]</code></td><td><code class="res">'тон'</code></td><td>Последние три символа.</td></tr><tr><td><code><span class="t-v">word</span>[:-<span class="t-n">1</span>]</code></td><td><code class="res">'Пито'</code></td><td>Всё, кроме последнего символа.</td></tr><tr><td><code><span class="t-v">word</span>[::<span class="t-n">2</span>]</code></td><td><code class="res">'Птн'</code></td><td>Третье число — шаг: каждый второй символ.</td></tr><tr><td><code><span class="t-v">word</span>[::-<span class="t-n">1</span>]</code></td><td><code class="res">'нотиП'</code></td><td>Шаг -1: строка задом наперёд.</td></tr></tbody></table></div>
+
+  <div class="lab" id="w-slice">
+    <div class="lab-head"><b>Тренажёр 3</b><h3>Индексы и срезы</h3></div>
+    <div class="lab-body">
+      <p>Над каждым символом — его индекс, под ним — индекс с конца. Меняй числа или выбери готовый пример. Пустое поле значит «не указано».</p>
+      <label class="field">Строка s =<input type="text" id="sl-text" value="Hello World" autocomplete="off" spellcheck="false" maxlength="24"></label>
+      <div class="chipset" id="sl-presets" role="group" aria-label="Готовые примеры">
+        <button type="button" data-a="0" data-b="" data-c="" data-i="1">s[0]</button>
+        <button type="button" data-a="-1" data-b="" data-c="" data-i="1">s[-1]</button>
+        <button type="button" data-a="6" data-b="8" data-c="">s[6:8]</button>
+        <button type="button" data-a="" data-b="5" data-c="">s[:5]</button>
+        <button type="button" data-a="-5" data-b="" data-c="">s[-5:]</button>
+        <button type="button" data-a="" data-b="" data-c="2">s[::2]</button>
+        <button type="button" data-a="" data-b="" data-c="-1">s[::-1]</button>
+      </div>
+      <div class="chipset" id="sl-mode" role="group" aria-label="Что берём">
+        <button type="button" data-mode="index" aria-pressed="false">один символ: s[i]</button>
+        <button type="button" data-mode="slice" aria-pressed="true">срез: s[старт:стоп:шаг]</button>
+      </div>
+      <div class="sl-fields">
+        <label class="field"><span id="sl-a-label">старт</span><input type="text" id="sl-a" value="6" inputmode="numeric" autocomplete="off"></label>
+        <label class="field" id="sl-b-wrap">стоп<input type="text" id="sl-b" value="8" inputmode="numeric" autocomplete="off"></label>
+        <label class="field" id="sl-c-wrap">шаг<input type="text" id="sl-c" value="" inputmode="numeric" autocomplete="off"></label>
+      </div>
+      <div class="sl-ruler scroll" id="sl-ruler" aria-hidden="true"></div>
+      <div class="sl-expr" id="sl-expr" aria-live="polite"></div>
+      <p class="say" id="sl-say"></p>
+    </div>
+  </div>
+
+  <h3>Индекс и срез можно вычислить</h3>
+  <p>В квадратных скобках может стоять не только число, но и выражение. Например, половина длины строки.</p>
+  <figure class="code"><figcaption><span class="code-name">halves.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">word</span> = <span class="t-s">"программа"</span></span>
+<span class="l"><span class="t-v">half</span> = <span class="t-f">len</span>(<span class="t-v">word</span>) // <span class="t-n">2</span>          <span class="t-m"># 9 // 2 = 4</span></span>
+<span class="l"><span class="t-f">print</span>(<span class="t-v">word</span>[:<span class="t-v">half</span>])             <span class="t-m"># первая половина</span></span>
+<span class="l"><span class="t-f">print</span>(<span class="t-v">word</span>[<span class="t-v">half</span>:])             <span class="t-m"># вторая половина</span></span>
+<span class="l"><span class="t-f">print</span>(<span class="t-v">word</span>[<span class="t-v">half</span>])              <span class="t-m"># первая буква второй половины</span></span></code></pre><div class="out"><div class="out-label"><span>Что на экране</span></div><pre class="scroll" tabindex="0">прог
+рамма
+р</pre></div></figure>
+  <p>Срезы хорошо работают вместе с повторением строк из прошлой темы. Так прячут часть секретного слова.</p>
+  <figure class="code"><figcaption><span class="code-name">mask.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">secret</span> = <span class="t-f">input</span>(<span class="t-s">"Секретное слово: "</span>)</span>
+<span class="l"><span class="t-m"># две первые буквы, вместо остальных — звёздочки</span></span>
+<span class="l"><span class="t-v">hidden</span> = <span class="t-v">secret</span>[:<span class="t-n">2</span>] + <span class="t-s">"*"</span> * (<span class="t-f">len</span>(<span class="t-v">secret</span>) - <span class="t-n">2</span>)</span>
+<span class="l"><span class="t-f">print</span>(<span class="t-v">hidden</span>)</span>
+<span class="l"><span class="t-f">print</span>(<span class="t-s">"Последняя буква:"</span>, <span class="t-v">secret</span>[-<span class="t-n">1</span>])</span>
+<span class="l"><span class="t-f">print</span>(<span class="t-s">"Наоборот:"</span>, <span class="t-v">secret</span>[::-<span class="t-n">1</span>])</span></code></pre><div class="out"><div class="out-label"><span>Что на экране</span><span class="out-legend"><span class="typed">так</span> выделен ввод с клавиатуры</span></div><pre class="scroll" tabindex="0">Секретное слово: <span class="typed">arbuz2026</span>
+ar*******
+Последняя буква: 6
+Наоборот: 6202zubra</pre></div></figure>
+
+  <h3>Строку нельзя изменить</h3>
+  <p>Символ в строке можно прочитать, но нельзя заменить. Строки в Python <span class="term">неизменяемы</span>.</p>
+  <figure class="code"><figcaption><span class="code-name">immutable.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">word</span> = <span class="t-s">"кот"</span></span>
+<span class="l"><span class="t-v">word</span>[<span class="t-n">0</span>] = <span class="t-s">"р"</span></span></code></pre><div class="out err"><div class="out-label"><span>Ошибка</span></div><pre class="scroll" tabindex="0">Traceback (most recent call last):
+  File "immutable.py", line 2, in &lt;module&gt;
+    word[0] = "р"
+TypeError: 'str' object does not support item assignment</pre></div></figure>
+  <p>Чтобы «изменить» строку, собирают новую из кусков старой. Имя потом перевешивают на новую строку.</p>
+  <figure class="code"><figcaption><span class="code-name">rebuild.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">word</span> = <span class="t-s">"кот"</span></span>
+<span class="l"><span class="t-v">word</span> = <span class="t-s">"р"</span> + <span class="t-v">word</span>[<span class="t-n">1</span>:]          <span class="t-m"># «р» и всё, кроме первой буквы</span></span>
+<span class="l"><span class="t-f">print</span>(<span class="t-v">word</span>)</span></code></pre><div class="out"><div class="out-label"><span>Что на экране</span></div><pre class="scroll" tabindex="0">рот</pre></div></figure>
+  <div class="recap"><h3>Итог раздела</h3><ul>
+    <li>Индексы начинаются с нуля. <code>s[0]</code> — первый символ, <code>s[-1]</code> — последний.</li>
+    <li>Срез <code>s[старт:стоп]</code> не включает символ с номером «стоп».</li>
+    <li><code>s[:n]</code> — первые n символов, <code>s[-n:]</code> — последние n, <code>s[::-1]</code> — наоборот.</li>
+    <li>Строку нельзя изменить, можно только собрать новую.</li>
+  </ul></div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="sec" id="methods" data-toc="Методы строк и оператор in">
+  <header class="sec-head"><span class="sec-num">7</span><div><h2>Методы строк</h2><p>Как понять ответ человека</p></div></header>
+  <p>На вопрос «Продолжить? (да/нет)» люди отвечают по-разному: <code>да</code>, <code>Да</code>, <code>ДА</code>, <code> да </code> с пробелами. Для человека это одно и то же. Для сравнения <code>==</code> — четыре разные строки. Чтобы программа понимала любой вариант, ответ сначала приводят к одному виду.</p>
+  <p>Это делают <span class="term">методы</span>. Метод — это функция, которая «принадлежит» значению. Его вызывают через точку: сначала значение, потом точка, потом имя метода со скобками.</p>
+  <div class="tbl-wrap scroll" tabindex="0"><table class="evals"><thead><tr><th>Выражение</th><th>Результат</th><th>Пояснение</th></tr></thead><tbody><tr><td><code><span class="t-v">text</span>.<span class="t-f">strip</span>()</code></td><td><code class="res">'Привет, Мир!'</code></td><td>Убирает пробелы в начале и в конце.</td></tr><tr><td><code><span class="t-v">text</span>.<span class="t-f">lower</span>()</code></td><td><code class="res">'  привет, мир!  '</code></td><td>Все буквы маленькие.</td></tr><tr><td><code><span class="t-v">text</span>.<span class="t-f">upper</span>()</code></td><td><code class="res">'  ПРИВЕТ, МИР!  '</code></td><td>Все буквы большие.</td></tr><tr><td><code><span class="t-v">text</span>.<span class="t-f">replace</span>(<span class="t-s">"Мир"</span>, <span class="t-s">"Питон"</span>)</code></td><td><code class="res">'  Привет, Питон!  '</code></td><td>Заменяет один кусок на другой.</td></tr><tr><td><code><span class="t-v">text</span>.<span class="t-f">replace</span>(<span class="t-s">" "</span>, <span class="t-s">""</span>)</code></td><td><code class="res">'Привет,Мир!'</code></td><td>Замена на пустую строку удаляет все пробелы.</td></tr><tr><td><code><span class="t-v">text</span>.<span class="t-f">count</span>(<span class="t-s">"и"</span>)</code></td><td><code class="res">2</code></td><td>Сколько раз кусок встречается в строке.</td></tr><tr><td><code><span class="t-v">text</span>.<span class="t-f">strip</span>().<span class="t-f">startswith</span>(<span class="t-s">"При"</span>)</code></td><td><code class="res">True</code></td><td>Начинается ли строка с этого куска?</td></tr><tr><td><code><span class="t-v">text</span>.<span class="t-f">strip</span>().<span class="t-f">endswith</span>(<span class="t-s">"!"</span>)</code></td><td><code class="res">True</code></td><td>Заканчивается ли строка этим куском?</td></tr><tr><td><code><span class="t-s">"2026"</span>.<span class="t-f">isdigit</span>()</code></td><td><code class="res">True</code></td><td>Состоит ли строка только из цифр?</td></tr><tr><td><code><span class="t-s">"20a6"</span>.<span class="t-f">isdigit</span>()</code></td><td><code class="res">False</code></td><td>Нет: внутри буква.</td></tr><tr><td><code><span class="t-s">"Питон"</span>.<span class="t-f">isalpha</span>()</code></td><td><code class="res">True</code></td><td>Состоит ли строка только из букв?</td></tr></tbody></table></div>
+  <div class="note warn"><span class="tag">Ловушка</span>
+    <p>Строку нельзя изменить, поэтому метод не меняет её, а возвращает <strong>новую</strong> строку. Этот результат нужно сохранить, иначе он пропадёт.</p>
+  </div>
+  <figure class="code"><figcaption><span class="code-name">city.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">city</span> = <span class="t-s">"  берлин "</span></span>
+<span class="l"><span class="t-v">city</span>.<span class="t-f">strip</span>()                   <span class="t-m"># результат не сохранён и пропал</span></span>
+<span class="l"><span class="t-f">print</span>(<span class="t-s">"["</span> + <span class="t-v">city</span> + <span class="t-s">"]"</span>)</span>
+<span class="l"><span class="t-v">city</span> = <span class="t-v">city</span>.<span class="t-f">strip</span>()            <span class="t-m"># имя указывает на новую строку</span></span>
+<span class="l"><span class="t-f">print</span>(<span class="t-s">"["</span> + <span class="t-v">city</span> + <span class="t-s">"]"</span>)</span></code></pre><div class="out"><div class="out-label"><span>Что на экране</span></div><pre class="scroll" tabindex="0">[  берлин ]
+[берлин]</pre></div></figure>
+
+  <h3>Цепочка методов: приводим ввод к одному виду</h3>
+  <p>Методы можно вызывать один за другим. Цепочка читается слева направо: <code>input()</code> вернул строку, <code>strip()</code> убрал пробелы по краям, <code>lower()</code> сделал буквы маленькими. Сравнивать после этого нужно с маленькими буквами.</p>
+  <figure class="code"><figcaption><span class="code-name">yesno.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">answer</span> = <span class="t-f">input</span>(<span class="t-s">"Продолжить? (да/нет) "</span>).<span class="t-f">strip</span>().<span class="t-f">lower</span>()</span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">answer</span> == <span class="t-s">"да"</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Продолжаем"</span>)</span>
+<span class="l"><span class="t-c">elif</span> <span class="t-v">answer</span> == <span class="t-s">"нет"</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Выходим"</span>)</span>
+<span class="l"><span class="t-c">else</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Не понял ответ"</span>)</span></code></pre><div class="out"><div class="out-label"><span>Запуск 1</span><span class="out-legend"><span class="typed">так</span> выделен ввод с клавиатуры</span></div><pre class="scroll" tabindex="0">Продолжить? (да/нет) <span class="typed">  ДА </span>
+Продолжаем</pre></div><div class="out"><div class="out-label"><span>Запуск 2</span></div><pre class="scroll" tabindex="0">Продолжить? (да/нет) <span class="typed">Нет</span>
+Выходим</pre></div><div class="out"><div class="out-label"><span>Запуск 3</span></div><pre class="scroll" tabindex="0">Продолжить? (да/нет) <span class="typed">может быть</span>
+Не понял ответ</pre></div></figure>
+
+  <div class="lab" id="w-methods">
+    <div class="lab-head"><b>Тренажёр 4</b><h3>Что сделает метод</h3></div>
+    <div class="lab-body">
+      <p>Представь, что программа выполнила <code>text = input()</code>. Напечатай ответ человека или выбери готовый.</p>
+      <label class="field">Человек ввёл:<input type="text" id="mt-text" value="  ДА " autocomplete="off" spellcheck="false"></label>
+      <div class="chipset" id="mt-presets" role="group" aria-label="Готовые варианты">
+        <button type="button" data-v="  ДА ">с пробелами</button>
+        <button type="button" data-v="да">да</button>
+        <button type="button" data-v="Нет">Нет</button>
+        <button type="button" data-v="Да, конечно!">Да, конечно!</button>
+        <button type="button" data-v=" 2026 ">2026</button>
+        <button type="button" data-v="20 26">20 26</button>
+      </div>
+      <div class="tbl-wrap scroll" tabindex="0"><table>
+        <thead><tr><th>Выражение</th><th>Результат</th></tr></thead>
+        <tbody id="mt-rows"></tbody>
+      </table></div>
+      <p class="say" id="mt-say" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <h3>Оператор in: есть ли кусок внутри строки</h3>
+  <p>Оператор <code>in</code> («в») проверяет, встречается ли одна строка внутри другой. Результат — <code>True</code> или <code>False</code>.</p>
+  <div class="tbl-wrap scroll" tabindex="0"><table class="evals"><thead><tr><th>Выражение</th><th>Результат</th><th>Пояснение</th></tr></thead><tbody><tr><td><code><span class="t-s">"@"</span> <span class="t-k">in</span> <span class="t-s">"max@mail.com"</span></code></td><td><code class="res">True</code></td><td>В адресе есть знак @.</td></tr><tr><td><code><span class="t-s">"кот"</span> <span class="t-k">in</span> <span class="t-s">"котлета"</span></code></td><td><code class="res">True</code></td><td>Кусок «кот» встречается в слове.</td></tr><tr><td><code><span class="t-s">" "</span> <span class="t-k">in</span> <span class="t-s">"без_пробелов"</span></code></td><td><code class="res">False</code></td><td>Пробела внутри нет.</td></tr><tr><td><code><span class="t-s">"я"</span> <span class="t-k">not</span> <span class="t-k">in</span> <span class="t-s">"команда"</span></code></td><td><code class="res">True</code></td><td>not in — «не встречается».</td></tr></tbody></table></div>
+
+  <h3>Число ли это?</h3>
+  <p>Теперь можно закрыть дыру из прошлой темы. Раньше программа падала, если вместо числа вводили слово. Метод <code>isdigit()</code> позволяет проверить строку <strong>до</strong> того, как превращать её в число.</p>
+  <figure class="code"><figcaption><span class="code-name">tickets.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-v">text</span> = <span class="t-f">input</span>(<span class="t-s">"Сколько билетов? "</span>).<span class="t-f">strip</span>()</span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">text</span>.<span class="t-f">isdigit</span>():</span>
+<span class="l">    <span class="t-v">count</span> = <span class="t-t">int</span>(<span class="t-v">text</span>)              <span class="t-m"># теперь int() точно сработает</span></span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-k">f</span><span class="t-s">"К оплате: </span><span class="t-k">{</span><span class="t-v">count</span> * <span class="t-n">12</span><span class="t-k">}</span><span class="t-s"> евро"</span>)</span>
+<span class="l"><span class="t-c">else</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Нужно ввести целое число цифрами"</span>)</span></code></pre><div class="out"><div class="out-label"><span>Запуск 1</span><span class="out-legend"><span class="typed">так</span> выделен ввод с клавиатуры</span></div><pre class="scroll" tabindex="0">Сколько билетов? <span class="typed">3</span>
+К оплате: 36 евро</pre></div><div class="out"><div class="out-label"><span>Запуск 2</span></div><pre class="scroll" tabindex="0">Сколько билетов? <span class="typed">три</span>
+Нужно ввести целое число цифрами</pre></div></figure>
+  <div class="recap"><h3>Итог раздела</h3><ul>
+    <li>Метод вызывают через точку: <code>text.lower()</code>. Он возвращает новую строку.</li>
+    <li>Ответ человека приводим к одному виду: <code>input(...).strip().lower()</code>.</li>
+    <li><code>in</code> проверяет, есть ли кусок внутри строки.</li>
+    <li><code>isdigit()</code> проверяет, что в строке только цифры.</li>
+  </ul></div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="sec" id="club" data-toc="Практикум: фейсконтроль">
+  <header class="sec-head"><span class="sec-num">8</span><div><h2>Практикум: фейсконтроль</h2><p>Собираем всё вместе</p></div></header>
+  <p>Пишем программу-вышибалу в виде задания с контрольной: пункт a) — написать, пункт b) — доработать, пункт c) — объяснить.</p>
+  <ul>
+    <li><strong>a)</strong> Программа спрашивает возраст. Младше 16 — не пускает. В 16 и 17 лет — пускает, но только до 22:00. С 18 лет — пускает. Возраст меньше нуля или больше 120 — ошибка ввода.</li>
+    <li><strong>b)</strong> Если гостя пустили, программа спрашивает, есть ли он в списке гостей. Гости из списка проходят без очереди. Ответ может быть набран как угодно.</li>
+    <li><strong>c)</strong> Обоснование — комментариями в конце.</li>
+  </ul>
+  <figure class="code"><figcaption><span class="code-name">Ivanov.py</span><button class="copy" type="button">Копировать</button></figcaption><pre class="scroll" tabindex="0"><code><span class="l"><span class="t-m"># Задание a): решаем по возрасту, пускать ли гостя.</span></span>
+<span class="l"><span class="t-v">age</span> = <span class="t-t">int</span>(<span class="t-f">input</span>(<span class="t-s">"Сколько тебе лет? "</span>))</span>
+<span class="l"><span class="t-c">if</span> <span class="t-v">age</span> &lt; <span class="t-n">0</span> <span class="t-k">or</span> <span class="t-v">age</span> &gt; <span class="t-n">120</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Ошибка: такого возраста не бывает"</span>)</span>
+<span class="l"><span class="t-c">elif</span> <span class="t-v">age</span> &lt; <span class="t-n">16</span>:</span>
+<span class="l">    <span class="t-f">print</span>(<span class="t-s">"Извини, вход с 16 лет"</span>)</span>
+<span class="l"><span class="t-c">else</span>:</span>
+<span class="l">    <span class="t-c">if</span> <span class="t-v">age</span> &lt; <span class="t-n">18</span>:</span>
+<span class="l">        <span class="t-f">print</span>(<span class="t-s">"Проходи, но только до 22:00"</span>)</span>
+<span class="l">    <span class="t-c">else</span>:</span>
+<span class="l">        <span class="t-f">print</span>(<span class="t-s">"Проходи!"</span>)</span>
+<span class="l"></span>
+<span class="l">    <span class="t-m"># Задание b): гости из списка идут без очереди.</span></span>
+<span class="l">    <span class="t-v">answer</span> = <span class="t-f">input</span>(<span class="t-s">"Ты в списке гостей? (да/нет) "</span>).<span class="t-f">strip</span>().<span class="t-f">lower</span>()</span>
+<span class="l">    <span class="t-c">if</span> <span class="t-v">answer</span> == <span class="t-s">"да"</span>:</span>
+<span class="l">        <span class="t-f">print</span>(<span class="t-s">"Тебе без очереди, вход справа"</span>)</span>
+<span class="l">    <span class="t-c">else</span>:</span>
+<span class="l">        <span class="t-f">print</span>(<span class="t-s">"Очередь слева"</span>)</span>
+<span class="l"></span>
+<span class="l"><span class="t-m"># Задание c): обоснование.</span></span>
+<span class="l"><span class="t-m"># Проверка ошибочного возраста стоит первой. Иначе число -5 попало</span></span>
+<span class="l"><span class="t-m"># бы в ветку «младше 16», и программа ответила бы как обычному гостю.</span></span>
+<span class="l"><span class="t-m"># Лестница if/elif/else выбрана, потому что нужен ровно один ответ.</span></span>
+<span class="l"><span class="t-m"># Вопрос про список стоит внутри ветки else: его задают только</span></span>
+<span class="l"><span class="t-m"># тем, кого пустили. Ответ проходит через strip() и lower():</span></span>
+<span class="l"><span class="t-m"># человек может набрать « Да » или «ДА», а == сравнивает</span></span>
+<span class="l"><span class="t-m"># каждый символ.</span></span></code></pre><div class="out"><div class="out-label"><span>Запуск 1</span><span class="out-legend"><span class="typed">так</span> выделен ввод с клавиатуры</span></div><pre class="scroll" tabindex="0">Сколько тебе лет? <span class="typed">17</span>
+Проходи, но только до 22:00
+Ты в списке гостей? (да/нет) <span class="typed"> Да </span>
+Тебе без очереди, вход справа</pre></div><div class="out"><div class="out-label"><span>Запуск 2</span></div><pre class="scroll" tabindex="0">Сколько тебе лет? <span class="typed">25</span>
+Проходи!
+Ты в списке гостей? (да/нет) <span class="typed">нет</span>
+Очередь слева</pre></div><div class="out"><div class="out-label"><span>Запуск 3</span></div><pre class="scroll" tabindex="0">Сколько тебе лет? <span class="typed">12</span>
+Извини, вход с 16 лет</pre></div><div class="out"><div class="out-label"><span>Запуск 4</span></div><pre class="scroll" tabindex="0">Сколько тебе лет? <span class="typed">-5</span>
+Ошибка: такого возраста не бывает</pre></div></figure>
+  <p>Посмотри на четыре запуска. В первых двух программа доходит до вопроса про список. В третьем и четвёртом вопрос не задаётся: он стоит внутри ветки <code>else</code>, а до неё дело не дошло.</p>
+
+  <h3>Ошибки этой темы</h3>
+  <div class="tbl-wrap scroll" tabindex="0"><table class="wide">
+    <thead><tr><th>Что видно</th><th>В чём причина</th><th>Как чинить</th></tr></thead>
+    <tbody>
+      <tr><td><code>SyntaxError: expected ':'</code></td><td>В конце строки с <code>if</code>, <code>elif</code> или <code>else</code> нет двоеточия.</td><td>Поставить двоеточие.</td></tr>
+      <tr><td><code>IndentationError</code></td><td>Под заголовком нет строк с отступом, или отступы разной ширины.</td><td>Выровнять блок: четыре пробела.</td></tr>
+      <tr><td><code>SyntaxError</code> в строке с <code>if x = 5</code></td><td>Один знак <code>=</code> вместо двух.</td><td>Написать <code>==</code>.</td></tr>
+      <tr><td><code>TypeError: '&gt;=' not supported…</code></td><td>Строка сравнивается с числом: забыт <code>int()</code> вокруг <code>input()</code>.</td><td>Превратить ввод в число.</td></tr>
+      <tr><td>Ошибки нет, но ветка срабатывает всегда</td><td>Условие вида <code>x == "да" or "yes"</code>.</td><td>Полное сравнение с каждой стороны от <code>or</code>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="lab" id="w-bugs">
+    <div class="lab-head"><b>Тренажёр 5</b><h3>Охота на баги</h3></div>
+    <div class="lab-body">
+      <p>В каждой программе одна ошибка. Щёлкни по строке, которую нужно исправить.</p>
+      <div class="chipset" id="bug-tabs" role="tablist" aria-label="Программы с ошибками"></div>
+      <div id="bug-cases" style="margin-top:.9rem">
+        <div class="bug-case" data-answer="2">
+          <p class="bug-q">Программа не запускается. Какую строку исправить?</p>
+<div class="bug-code scroll"><button type="button" class="bug-line" data-n="1"><span class="bug-n">1</span><code><span class="t-v">age</span> = <span class="t-n">20</span></code></button><button type="button" class="bug-line" data-n="2"><span class="bug-n">2</span><code><span class="t-c">if</span> <span class="t-v">age</span> &gt;= <span class="t-n">18</span></code></button><button type="button" class="bug-line" data-n="3"><span class="bug-n">3</span><code>    <span class="t-f">print</span>(<span class="t-s">"Проходи!"</span>)</code></button></div><pre class="bug-msg scroll" hidden>  File "club.py", line 2
+    if age &gt;= 18
+                ^
+SyntaxError: expected ':'</pre>
+          <p class="say bug-why" hidden>Верно. В конце строки 2 нет двоеточия. Python так и пишет: «ожидалось двоеточие».</p>
+        </div>
+        <div class="bug-case" data-answer="2" hidden>
+          <p class="bug-q">Программа не запускается. Какую строку исправить?</p>
+<div class="bug-code scroll"><button type="button" class="bug-line" data-n="1"><span class="bug-n">1</span><code><span class="t-v">answer</span> = <span class="t-s">"да"</span></code></button><button type="button" class="bug-line" data-n="2"><span class="bug-n">2</span><code><span class="t-c">if</span> <span class="t-v">answer</span> = <span class="t-s">"да"</span>:</code></button><button type="button" class="bug-line" data-n="3"><span class="bug-n">3</span><code>    <span class="t-f">print</span>(<span class="t-s">"Продолжаем"</span>)</code></button></div><pre class="bug-msg scroll" hidden>  File "answer.py", line 2
+    if answer = "да":
+       ^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?</pre>
+          <p class="say bug-why" hidden>Верно. В условии стоит один знак <code>=</code>, а это присваивание. Для сравнения нужно два знака: <code>==</code>. Python даже подсказывает это в сообщении.</p>
+        </div>
+        <div class="bug-case" data-answer="3" hidden>
+          <p class="bug-q">Программа не запускается. Какую строку исправить?</p>
+<div class="bug-code scroll"><button type="button" class="bug-line" data-n="1"><span class="bug-n">1</span><code><span class="t-v">hour</span> = <span class="t-n">9</span></code></button><button type="button" class="bug-line" data-n="2"><span class="bug-n">2</span><code><span class="t-c">if</span> <span class="t-v">hour</span> &lt; <span class="t-n">12</span>:</code></button><button type="button" class="bug-line" data-n="3"><span class="bug-n">3</span><code><span class="t-f">print</span>(<span class="t-s">"Доброе утро!"</span>)</code></button></div><pre class="bug-msg scroll" hidden>  File "hello.py", line 3
+    print("Доброе утро!")
+    ^^^^^
+IndentationError: expected an indented block after 'if' statement on line 2</pre>
+          <p class="say bug-why" hidden>Верно. Строка 3 должна быть блоком условия, но у неё нет отступа. Перед <code>print</code> нужны четыре пробела.</p>
+        </div>
+        <div class="bug-case" data-answer="1" data-near="2" hidden>
+          <p class="bug-q">Человек ввёл 20. Какую строку исправить?</p>
+<div class="bug-code scroll"><button type="button" class="bug-line" data-n="1"><span class="bug-n">1</span><code><span class="t-v">age</span> = <span class="t-f">input</span>(<span class="t-s">"Сколько тебе лет? "</span>)</code></button><button type="button" class="bug-line" data-n="2"><span class="bug-n">2</span><code><span class="t-c">if</span> <span class="t-v">age</span> &gt;= <span class="t-n">18</span>:</code></button><button type="button" class="bug-line" data-n="3"><span class="bug-n">3</span><code>    <span class="t-f">print</span>(<span class="t-s">"Проходи!"</span>)</code></button></div><pre class="bug-msg scroll" hidden>Traceback (most recent call last):
+  File "age.py", line 2, in &lt;module&gt;
+    if age &gt;= 18:
+TypeError: '&gt;=' not supported between instances of 'str' and 'int'</pre>
+          <p class="say bug-why" hidden>Верно. Python остановился на строке 2, но причина — в строке 1. <code>input()</code> вернул строку, а строку нельзя сравнить с числом. Исправление: <code>age = int(input("Сколько тебе лет? "))</code>.</p>
+        </div>
+      </div>
+      <p class="say" id="bug-say" aria-live="polite"></p>
+    </div>
+  </div>
+  <div class="note kr"><span class="tag">На КР</span>
+    <p>В пункте c) часто спрашивают «почему так?». Хорошие ответы для этой темы: «проверка ввода стоит первой, чтобы…», «нужен ровно один вариант, поэтому лестница», «ответ приведён к одному виду, потому что сравнение строк учитывает каждый символ».</p>
+  </div>
+  <div class="recap"><h3>Итог раздела</h3><ul>
+    <li>Сначала проверяем ввод, потом выбираем ветку, потом уточняем детали.</li>
+    <li>Вопрос, который нужен не всем, ставим внутрь нужной ветки.</li>
+    <li>Каждое решение можно объяснить одним-двумя предложениями.</li>
+  </ul></div>
+</section>
+
+<!-- ============ ИТОГИ ============ -->
+<section class="sec" id="summary" data-toc="Итоги лекции">
+  <header class="sec-head"><span class="sec-num">Σ</span><div><h2>Итоги лекции</h2><p>Пять фактов и пять терминов</p></div></header>
+  <div class="sum-grid">
+    <div class="tile c"><h3>5 главных фактов</h3>
+      <ol>
+        <li>Сравнение даёт <code>True</code> или <code>False</code>. <code>==</code> сравнивает, <code>=</code> присваивает.</li>
+        <li>Лестница <code>if / elif / else</code> выполняет одну ветку — первую подходящую. Блок задаётся отступом.</li>
+        <li><code>and</code> — оба условия, <code>or</code> — хотя бы одно, <code>not</code> — наоборот.</li>
+        <li>Индексы строки начинаются с нуля. Срез не включает символ «стоп». Строку нельзя изменить.</li>
+        <li>Ввод перед сравнением приводим к одному виду: <code>.strip().lower()</code>.</li>
+      </ol>
+    </div>
+    <div class="tile b"><h3>5 ключевых терминов</h3>
+      <dl>
+        <dt>Условие</dt><dd>Выражение, которое даёт <code>True</code> или <code>False</code>.</dd>
+        <dt>Блок</dt><dd>Строки с одинаковым отступом, которые выполняются вместе.</dd>
+        <dt>Логический оператор</dt><dd><code>and</code>, <code>or</code>, <code>not</code>: соединяют и переворачивают условия.</dd>
+        <dt>Индекс и срез</dt><dd>Номер символа в строке и кусок строки.</dd>
+        <dt>Метод</dt><dd>Функция, которую вызывают через точку после значения.</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="tbl-wrap scroll" tabindex="0"><table>
+    <thead><tr><th>Хочу</th><th>Пишу</th></tr></thead>
+    <tbody>
+      <tr><td>Число в промежутке</td><td><code class="py"><span class="t-n">0</span> &lt;= <span class="t-v">x</span> &lt;= <span class="t-n">100</span></code></td></tr>
+      <tr><td>Число вне промежутка</td><td><code class="py"><span class="t-v">x</span> &lt; <span class="t-n">0</span> <span class="t-k">or</span> <span class="t-v">x</span> &gt; <span class="t-n">100</span></code></td></tr>
+      <tr><td>Делится на 4</td><td><code class="py"><span class="t-v">x</span> % <span class="t-n">4</span> == <span class="t-n">0</span></code></td></tr>
+      <tr><td>Первый и последний символ</td><td><code class="py"><span class="t-v">s</span>[<span class="t-n">0</span>]</code> и <code class="py"><span class="t-v">s</span>[-<span class="t-n">1</span>]</code></td></tr>
+      <tr><td>Первые три и последние три</td><td><code class="py"><span class="t-v">s</span>[:<span class="t-n">3</span>]</code> и <code class="py"><span class="t-v">s</span>[-<span class="t-n">3</span>:]</code></td></tr>
+      <tr><td>Строка наоборот</td><td><code class="py"><span class="t-v">s</span>[::-<span class="t-n">1</span>]</code></td></tr>
+      <tr><td>Понять ответ «да»</td><td><code class="py"><span class="t-v">answer</span>.<span class="t-f">strip</span>().<span class="t-f">lower</span>() == <span class="t-s">"да"</span></code></td></tr>
+      <tr><td>Удалить все пробелы</td><td><code class="py"><span class="t-v">s</span>.<span class="t-f">replace</span>(<span class="t-s">" "</span>, <span class="t-s">""</span>)</code></td></tr>
+      <tr><td>Есть ли кусок внутри</td><td><code class="py"><span class="t-s">"@"</span> <span class="t-k">in</span> <span class="t-v">s</span></code></td></tr>
+      <tr><td>В строке только цифры</td><td><code class="py"><span class="t-v">s</span>.<span class="t-f">isdigit</span>()</code></td></tr>
+      <tr><td>Случайное целое от 1 до 6</td><td><code class="py"><span class="t-v">random</span>.<span class="t-f">randint</span>(<span class="t-n">1</span>, <span class="t-n">6</span>)</code></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ ПРОВЕРЬ СЕБЯ ============ -->
+<section class="sec" id="quiz" data-toc="Проверь себя">
+  <header class="sec-head"><span class="sec-num">?</span><div><h2>Проверь себя</h2><p>Восемь вопросов</p></div></header>
+  <p>Сначала ответь сам — вслух или на бумаге. Потом открой ответ и честно отметь результат.</p>
+  <div class="quiz">
+    <div class="quiz-bar"><span class="quiz-score" aria-live="polite"></span><button class="btn ghost quiz-toggle" type="button">Открыть все ответы</button></div>
+
+    <details class="q"><summary><span>Чем <code>=</code> отличается от <code>==</code>?</span></summary>
+      <div class="a"><p><code>=</code> — присваивание: имя начинает указывать на значение. <code>==</code> — сравнение: вопрос «равны ли значения?», ответ <code>True</code> или <code>False</code>. В условии после <code>if</code> почти всегда нужен <code>==</code>.</p></div></details>
+
+    <details class="q"><summary><span>Почему <code>"10" &gt; "9"</code> даёт <code>False</code>, а <code>10 &gt; 9</code> — <code>True</code>?</span></summary>
+      <div class="a"><p>Строки сравниваются по символам, как слова в словаре. Первый символ <code>"1"</code> стоит раньше, чем <code>"9"</code>, поэтому строка <code>"10"</code> «меньше». Числа сравниваются как числа. Вывод: ввод сначала превращаем через <code>int()</code>.</p></div></details>
+
+    <details class="q"><summary><span>В лестнице первым стоит условие <code>points &gt;= 50</code>, вторым — <code>points &gt;= 90</code>. Что получит студент с 95 баллами?</span></summary>
+      <div class="a"><p>Ответ из первой ветки. Условие <code>95 &gt;= 50</code> истинно, Python выполняет эту ветку и остальные не проверяет. Чтобы работало верно, условие <code>points &gt;= 90</code> нужно поставить первым.</p></div></details>
+
+    <details class="q"><summary><span>Подбери x, y и z, при которых <code>(x or y) and (z or not y)</code> истинно.</span></summary>
+      <div class="a"><p>Подходят четыре набора из восьми. Если <code>y</code> ложно, достаточно <code>x = True</code>: вторая скобка истинна из-за <code>not y</code>. Если <code>y</code> истинно, первая скобка уже истинна, и нужно <code>z = True</code>. Проверить любой набор можно в тренажёре 2.</p></div></details>
+
+    <details class="q"><summary><span>Собери из строки <code>s = "Hello World"</code> слово <code>"Wolle"</code> с помощью индексов и срезов.</span></summary>
+      <div class="a"><p>Один из способов: <code>s[6:8] + s[2:4] + s[1]</code>. Срез <code>s[6:8]</code> даёт <code>"Wo"</code>, срез <code>s[2:4]</code> — <code>"ll"</code>, а <code>s[1]</code> — букву <code>"e"</code>. Проверить можно в тренажёре 3.</p></div></details>
+
+    <details class="q"><summary><span>Что делает <code>strip()</code> и зачем он нужен после <code>input()</code>?</span></summary>
+      <div class="a"><p><code>strip()</code> убирает пробелы в начале и в конце строки. Человек легко ставит лишний пробел, а для <code>==</code> строки <code>"да"</code> и <code>"да "</code> разные. После <code>strip()</code> случайный пробел программе не мешает.</p></div></details>
+
+    <details class="q"><summary><span>Почему условие <code>answer == "да" or "yes"</code> истинно всегда? Как записать правильно?</span></summary>
+      <div class="a"><p>Справа от <code>or</code> стоит не сравнение, а просто строка <code>"yes"</code>. Непустую строку Python считает правдой, поэтому всё условие истинно при любом ответе. Правильно: <code>answer == "да" or answer == "yes"</code>.</p></div></details>
+
+    <details class="q"><summary><span>Выполнили <code>word = "кот"</code>, затем <code>word[0] = "р"</code>. Что произойдёт? Как получить <code>"рот"</code>?</span></summary>
+      <div class="a"><p>Будет ошибка <code>TypeError</code>: строку нельзя изменить. Нужно собрать новую строку: <code>word = "р" + word[1:]</code>.</p></div></details>
+  </div>
+
+  <div class="foot">
+    <h2>Что дальше</h2>
+    <p>Лабораторная 2: пять задач на занятии и семь дома. Следующая тема — «Циклы»: программа научится повторять действия столько раз, сколько нужно.</p>
+  </div>
+</section>
+</main>
+</div>
+
+<script>
+/* Общие механики лекции: тема, прогресс чтения, оглавление, копирование кода, «Проверь себя». */
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var $ = function (s, el) { return (el || document).querySelector(s); };
+  var $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
+
+  /* --- три темы: светлая, тёмная, системная --- */
+  var KEY = 'py-course-theme';
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  var choice = 'system';
+  try { choice = localStorage.getItem(KEY) || 'system'; } catch (e) { /* хранилище недоступно */ }
+  function applyTheme() {
+    var eff = choice === 'system' ? (mq && mq.matches ? 'dark' : 'light') : choice;
+    root.setAttribute('data-theme', eff);
+    $$('.themes button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-set') === choice));
+    });
+  }
+  $$('.themes button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      choice = b.getAttribute('data-set');
+      try { localStorage.setItem(KEY, choice); } catch (e) { /* не страшно */ }
+      applyTheme();
+    });
+  });
+  if (mq) {
+    var onMq = function () { if (choice === 'system') applyTheme(); };
+    if (mq.addEventListener) mq.addEventListener('change', onMq); else if (mq.addListener) mq.addListener(onMq);
+  }
+  applyTheme();
+
+  /* --- прогресс чтения и подсветка раздела в оглавлении --- */
+  var bar = $('.progress i');
+  var toc = $('#toc');
+  var links = $$('#toc a');
+  var secs = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+  var ticking = false;
+  function onScroll() {
+    ticking = false;
+    var max = root.scrollHeight - window.innerHeight;
+    var y = window.pageYOffset || root.scrollTop || 0;
+    if (bar) bar.style.width = (max > 0 ? Math.min(100, y / max * 100) : 0) + '%';
+    var cur = -1;
+    for (var i = 0; i < secs.length; i++) {
+      if (secs[i] && secs[i].getBoundingClientRect().top <= 140) cur = i;
+    }
+    if (max > 0 && y >= max - 2) cur = secs.length - 1;
+    links.forEach(function (a, i) {
+      a.classList.toggle('active', i === cur);
+      a.classList.toggle('done', i < cur);
+      if (i === cur) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+    if (cur >= 0 && toc && toc.scrollHeight > toc.clientHeight && !toc.classList.contains('open')) {
+      var a = links[cur];
+      var top = a.offsetTop - toc.clientHeight / 2 + a.offsetHeight / 2;
+      toc.scrollTop = Math.max(0, top);
+    }
+  }
+  function requestTick() { if (!ticking) { ticking = true; (window.requestAnimationFrame || setTimeout)(onScroll); } }
+  window.addEventListener('scroll', requestTick, { passive: true });
+  window.addEventListener('resize', requestTick);
+  onScroll();
+
+  /* --- оглавление на телефоне --- */
+  var tocBtn = $('.toc-btn');
+  function closeToc() { if (toc) toc.classList.remove('open'); if (tocBtn) tocBtn.setAttribute('aria-expanded', 'false'); }
+  if (tocBtn && toc) {
+    tocBtn.addEventListener('click', function () {
+      var open = toc.classList.toggle('open');
+      tocBtn.setAttribute('aria-expanded', String(open));
+    });
+    links.forEach(function (a) { a.addEventListener('click', closeToc); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeToc(); });
+    document.addEventListener('click', function (e) {
+      if (toc.classList.contains('open') && !toc.contains(e.target) && !tocBtn.contains(e.target)) closeToc();
+    });
+  }
+
+  /* --- кнопка «Копировать» на каждом блоке кода --- */
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
+    }
+    return legacyCopy(text);
+  }
+  function legacyCopy(text) {
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed'; ta.style.top = '-1000px';
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      if (ok) resolve(); else reject(new Error('copy'));
+    });
+  }
+  $$('.code .copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var code = $('pre code', btn.closest('.code'));
+      var text = $$('.l', code).map(function (l) { return l.textContent; }).join('\n');
+      copyText(text).then(function () { flash(btn, 'Скопировано', 'ok'); }, function () { flash(btn, 'Не вышло', ''); });
+    });
+  });
+  function flash(btn, label, cls) {
+    var old = btn.getAttribute('data-label') || btn.textContent;
+    btn.setAttribute('data-label', old);
+    btn.textContent = label;
+    if (cls) btn.classList.add(cls);
+    clearTimeout(btn._t);
+    btn._t = setTimeout(function () { btn.textContent = old; btn.classList.remove('ok'); }, 1600);
+  }
+
+  /* --- «Проверь себя»: раскрытие ответов и самооценка --- */
+  var quiz = $('.quiz');
+  if (quiz) {
+    var qs = $$('.q', quiz);
+    var score = $('.quiz-score');
+    var toggleAll = $('.quiz-toggle');
+    function updateScore() {
+      var yes = qs.filter(function (q) { return q.getAttribute('data-mark') === 'yes'; }).length;
+      var marked = qs.filter(function (q) { return q.hasAttribute('data-mark'); }).length;
+      if (score) score.textContent = marked ? 'Знал ответ: ' + yes + ' из ' + qs.length : 'Вопросов: ' + qs.length + '. Сначала ответь сам, потом открой ответ.';
+    }
+    qs.forEach(function (q) {
+      var box = document.createElement('div');
+      box.className = 'mark';
+      [['yes', 'Я ответил верно'], ['no', 'Надо повторить']].forEach(function (pair) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'btn ghost'; b.textContent = pair[1];
+        b.setAttribute('aria-pressed', 'false');
+        b.addEventListener('click', function () {
+          q.setAttribute('data-mark', pair[0]);
+          $$('.btn', box).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+          updateScore();
+        });
+        box.appendChild(b);
+      });
+      $('.a', q).appendChild(box);
+    });
+    if (toggleAll) {
+      toggleAll.addEventListener('click', function () {
+        var open = qs.some(function (q) { return !q.open; });
+        qs.forEach(function (q) { q.open = open; });
+        toggleAll.textContent = open ? 'Скрыть все ответы' : 'Открыть все ответы';
+      });
+    }
+    updateScore();
+  }
+})();
+
+/* Общие помощники тренажёров: значения «как в Python» и «Охота на баги». */
+(function () {
+  'use strict';
+  var $ = function (s, el) { return (el || document).querySelector(s); };
+  var $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  /* --- как Python показывает значения --- */
+  function pyRepr(s) {
+    var body = s.replace(/\\/g, '\\\\');
+    if (s.indexOf("'") >= 0 && s.indexOf('"') < 0) return '"' + body + '"';
+    return "'" + body.replace(/'/g, "\\'") + "'";
+  }
+  function pyFloat(x) {
+    if (isNaN(x)) return 'nan';
+    if (!isFinite(x)) return x < 0 ? '-inf' : 'inf';
+    if (Object.is(x, -0)) return '-0.0';
+    var a = Math.abs(x);
+    if (a !== 0 && (a >= 1e16 || a < 1e-4)) {
+      return x.toExponential().replace(/e([+-])(\d)$/, 'e$10$2');
+    }
+    return Number.isInteger(x) ? x.toFixed(0) + '.0' : String(x);
+  }
+  function pyFixed(x, d) {               /* как f"{x:.df}": округление «к чётному» при точной половине */
+    var neg = x < 0 || Object.is(x, -0);
+    var s = Math.abs(x).toFixed(Math.min(100, d + 30));
+    var dot = s.indexOf('.');
+    var keep = s.slice(0, dot) + s.slice(dot + 1, dot + 1 + d);
+    var tail = s.slice(dot + 1 + d);
+    var n = BigInt(keep);
+    var c = tail.charAt(0);
+    if (c > '5' || (c === '5' && (/[1-9]/.test(tail.slice(1)) || n % 2n === 1n))) n += 1n;
+    var t = n.toString();
+    while (t.length <= d) t = '0' + t;
+    return (neg ? '-' : '') + (d ? t.slice(0, t.length - d) + '.' + t.slice(t.length - d) : t);
+  }
+  function pyPad(n, width) {             /* как f"{n:0Wd}" */
+    var neg = n < 0n;
+    var digits = (neg ? -n : n).toString();
+    while (digits.length + (neg ? 1 : 0) < width) digits = '0' + digits;
+    return (neg ? '-' : '') + digits;
+  }
+  var RE_INT = /^[+-]?\d+(?:_\d+)*$/;
+  var RE_FLOAT = /^[+-]?(?:\d+(?:_\d+)*\.?(?:\d+(?:_\d+)*)?|\.\d+(?:_\d+)*)(?:[eE][+-]?\d+(?:_\d+)*)?$/;
+  var RE_SPECIAL = /^[+-]?(?:inf|infinity|nan)$/i;
+  function parseInt_(text) {
+    var t = text.trim();
+    return RE_INT.test(t) ? BigInt(t.replace(/_/g, '')) : null;
+  }
+  function parseFloat_(text) {
+    var t = text.trim();
+    if (RE_FLOAT.test(t)) return parseFloat(t.replace(/_/g, ''));
+    if (RE_SPECIAL.test(t)) { var low = t.toLowerCase(); return low.indexOf('nan') >= 0 ? NaN : (low.charAt(0) === '-' ? -Infinity : Infinity); }
+    return null;
+  }
+  window.PyKit = { $: $, $$: $$, el: el, pyRepr: pyRepr, pyFloat: pyFloat, pyFixed: pyFixed, pyPad: pyPad,
+    parseInt_: parseInt_, parseFloat_: parseFloat_, RE_INT: RE_INT, RE_FLOAT: RE_FLOAT };
+
+  /* --- «Охота на баги»: работает в любой лекции, где есть #bug-tabs и .bug-case --- */
+  (function () {
+    var tabs = $('#bug-tabs'); if (!tabs) return;
+    var cases = $$('.bug-case'), say = $('#bug-say'), solved = cases.map(function () { return false; });
+    function show(k) {
+      cases.forEach(function (c, j) { c.hidden = j !== k; });
+      $$('button', tabs).forEach(function (b, j) { b.setAttribute('aria-selected', String(j === k)); });
+      status();
+    }
+    function status() {
+      var n = solved.filter(Boolean).length;
+      say.textContent = n === cases.length ? 'Все баги пойманы. Так же ищи ошибки в своих программах: тип ошибки, номер строки, строка выше.'
+        : 'Поймано багов: ' + n + ' из ' + cases.length + '.';
+      $$('button', tabs).forEach(function (b, j) { b.textContent = 'Баг ' + (j + 1) + (solved[j] ? ' ✓' : ''); });
+    }
+    cases.forEach(function (c, k) {
+      var tab = el('button', '', 'Баг ' + (k + 1));
+      tab.type = 'button'; tab.setAttribute('role', 'tab');
+      tab.addEventListener('click', function () { show(k); });
+      tabs.appendChild(tab);
+      var answer = c.getAttribute('data-answer'), near = c.getAttribute('data-near');
+      var msg = $('.bug-msg', c), why = $('.bug-why', c);
+      var hint = el('p', 'say'); hint.hidden = true; hint.setAttribute('aria-live', 'polite');
+      c.appendChild(hint);
+      $$('.bug-line', c).forEach(function (line) {
+        line.addEventListener('click', function () {
+          var n = line.getAttribute('data-n');
+          $$('.bug-line', c).forEach(function (l) { l.classList.remove('miss'); });
+          if (n === answer) {
+            line.classList.add('hit'); msg.hidden = false; why.hidden = false; hint.hidden = true;
+            solved[k] = true; status();
+          } else if (!solved[k]) {
+            line.classList.add('miss'); hint.hidden = false;
+            hint.textContent = n === near
+              ? 'Почти. Именно на этой строке Python остановится. Но чинить нужно не её: причина появилась раньше. Откуда взялось значение?'
+              : 'Нет, эта строка в порядке. Прочитай программу сверху вниз, как это делает Python.';
+          }
+        });
+      });
+    });
+    show(0);
+  })();
+})();
+
+/* Длинный код внутри текста может переноситься, короткий — нет (иначе на телефоне он вылезает за край). */
+(function () {
+  'use strict';
+  var list = document.querySelectorAll('main p code, main li code, main summary code, main dd code, .note code');
+  Array.prototype.forEach.call(list, function (c) {
+    if (c.closest('pre, .steplist, .bug-line, .expr, .lab table') === null && c.textContent.length > 22) c.classList.add('wrap');
+  });
+})();
+
+</script>
+<script>
+/* ===== Тренажёры лекции 2 ===== */
+(function () {
+  'use strict';
+  var K = window.PyKit, $ = K.$, $$ = K.$$, el = K.el, pyRepr = K.pyRepr;
+  function pyBool(v) { return v ? 'True' : 'False'; }
+
+  /* --- Тренажёр 1: лестница elif --- */
+  (function () {
+    var slider = $('#ld-hour'); if (!slider) return;
+    var lines = $$('#ld-code li'), screen = $('#ld-screen'), say = $('#ld-say');
+    var conds = lines.filter(function (li) { return li.hasAttribute('data-limit'); });
+    var texts = ['Доброй ночи!', 'Доброе утро!', 'Добрый день!', 'Добрый вечер!'];
+    function draw() {
+      var h = +slider.value, branch = 3;
+      for (var i = 0; i < 3; i++) { if (h < +conds[i].getAttribute('data-limit')) { branch = i; break; } }
+      $('#ld-out').textContent = h;
+      lines.forEach(function (li) { li.className = ''; $('.flag', li).textContent = ''; });
+      conds.forEach(function (li, i) {
+        var flag = $('.flag', li);
+        if (i < branch) { li.className = 'no'; flag.textContent = 'False — идём дальше'; }
+        else if (i === branch) { li.className = 'yes'; flag.textContent = i === 3 ? 'остался только этот вариант' : 'True — стоп'; }
+        else { li.className = 'skip'; flag.textContent = 'не проверяется'; }
+      });
+      lines.forEach(function (li) {
+        if (li.getAttribute('data-branch') === String(branch)) { li.className = 'run'; $('.flag', li).textContent = 'выполняется'; }
+      });
+      screen.textContent = texts[branch];
+      var limits = [6, 12, 18], parts = [];
+      for (var k = 0; k < Math.min(branch, 3); k++) parts.push(h + ' < ' + limits[k] + ' — ложь');
+      if (branch < 3) parts.push(h + ' < ' + limits[branch] + ' — правда, выполняется эта ветка');
+      else parts.push('ни одно условие не подошло, выполняется else');
+      say.textContent = 'hour = ' + h + ': ' + parts.join('; ') + '.' +
+        (branch < 2 ? ' Условия ниже Python уже не проверяет.' : '');
+    }
+    slider.addEventListener('input', draw);
+    draw();
+  })();
+
+  /* --- Тренажёр 2: логическое выражение --- */
+  (function () {
+    var steps = $('#lg-steps'); if (!steps) return;
+    var rows = $('#lg-rows'), say = $('#lg-say'), buttons = $$('.lg-toggles button');
+    var v = { x: true, y: false, z: true };
+    function value(b) { var s = el('span', b ? 'T' : 'F', pyBool(b)); return s; }
+    function line(parts) {
+      var li = el('li');
+      parts.forEach(function (p) { li.appendChild(typeof p === 'string' ? document.createTextNode(p) : value(p)); });
+      steps.appendChild(li);
+    }
+    function calc(x, y, z) { return (x || y) && (z || !y); }
+    function draw() {
+      buttons.forEach(function (b) {
+        var name = b.getAttribute('data-v');
+        b.textContent = name + ' = ' + pyBool(v[name]);
+        b.setAttribute('aria-pressed', String(v[name]));
+      });
+      steps.textContent = '';
+      var a = v.x || v.y, ny = !v.y, b2 = v.z || ny, res = a && b2;
+      line(['(x or y) and (z or not y)']);
+      line(['(', v.x, ' or ', v.y, ') and (', v.z, ' or not ', v.y, ')']);
+      line(['(', v.x, ' or ', v.y, ') and (', v.z, ' or ', ny, ')']);
+      line([a, ' and ', b2]);
+      line([res]);
+      rows.textContent = '';
+      var count = 0;
+      [true, false].forEach(function (x) { [true, false].forEach(function (y) { [true, false].forEach(function (z) {
+        var r = calc(x, y, z); if (r) count++;
+        var tr = el('tr', x === v.x && y === v.y && z === v.z ? 'cur' : '');
+        [x, y, z].forEach(function (b) { tr.appendChild(el('td', '', pyBool(b))); });
+        tr.appendChild(el('td', r ? 'T' : 'F', pyBool(r)));
+        rows.appendChild(tr);
+      }); }); });
+      say.textContent = (res ? 'Сейчас выражение истинно.' : 'Сейчас выражение ложно.') +
+        (a ? '' : ' Первая скобка ложна: и x, и y ложны. Для and этого достаточно, чтобы всё стало ложью.') +
+        (a && !b2 ? ' Вторая скобка ложна: z ложно, а not y тоже ложно, потому что y истинно.' : '') +
+        ' Всего выражение истинно в ' + count + ' случаях из 8: они видны в таблице.';
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { var n = b.getAttribute('data-v'); v[n] = !v[n]; draw(); }); });
+    draw();
+  })();
+
+  /* --- Тренажёр 3: индексы и срезы (правила как в Python) --- */
+  function sliceIndices(len, a, b, c) {
+    var step = c === null ? 1 : c;
+    if (step === 0) return null;
+    function fix(x, isStart) {
+      if (x === null) return step > 0 ? (isStart ? 0 : len) : (isStart ? len - 1 : -1);
+      if (x < 0) { x += len; if (x < 0) x = step > 0 ? 0 : -1; }
+      else if (x >= len) x = step > 0 ? len : len - 1;
+      return x;
+    }
+    var start = fix(a, true), stop = fix(b, false), out = [], i;
+    if (step > 0) for (i = start; i < stop; i += step) out.push(i);
+    else for (i = start; i > stop; i += step) out.push(i);
+    return out;
+  }
+  window.__sliceIndices = sliceIndices;
+  (function () {
+    var T = $('#sl-text'); if (!T) return;
+    var A = $('#sl-a'), B = $('#sl-b'), C = $('#sl-c'), ruler = $('#sl-ruler'), expr = $('#sl-expr'), say = $('#sl-say');
+    var mode = 'slice', modes = $$('#sl-mode button'), presets = $$('#sl-presets button');
+    function num(input) {
+      var t = input.value.trim();
+      if (t === '') return null;
+      return /^[+-]?\d+$/.test(t) ? parseInt(t, 10) : NaN;
+    }
+    function show(code, text, cls) {
+      expr.textContent = '';
+      expr.appendChild(document.createTextNode(code + '  →  '));
+      expr.appendChild(el('span', cls, text));
+    }
+    function draw() {
+      var chars = Array.from(T.value), n = chars.length, a = num(A), b = num(B), c = num(C), picked = [], msg;
+      modes.forEach(function (m) { m.setAttribute('aria-pressed', String(m.getAttribute('data-mode') === mode)); });
+      $('#sl-b-wrap').hidden = mode === 'index'; $('#sl-c-wrap').hidden = mode === 'index';
+      $('#sl-a-label').textContent = mode === 'index' ? 'индекс i' : 'старт';
+      if (mode === 'index') {
+        if (a === null || isNaN(a)) { show('s[ ]', 'впиши целое число', 'bad'); msg = 'Индекс — целое число. Отрицательный индекс считает с конца.'; }
+        else {
+          var i = a < 0 ? a + n : a;
+          if (i < 0 || i >= n) { show('s[' + a + ']', 'IndexError: string index out of range', 'bad'); msg = 'В строке ' + n + ' символов. Допустимые индексы: от 0 до ' + (n - 1) + ' или от -' + n + ' до -1.'; }
+          else { picked = [i]; show('s[' + a + ']', pyRepr(chars[i]), 'res'); msg = a < 0 ? 'Отрицательный индекс считает с конца: ' + a + ' — это символ номер ' + i + ' с начала.' : 'Счёт идёт с нуля: индекс ' + a + ' — это ' + (a + 1) + '-й символ по счёту.'; }
+        }
+      } else {
+        var code = 's[' + (A.value.trim()) + ':' + (B.value.trim()) + (C.value.trim() !== '' ? ':' + C.value.trim() : '') + ']';
+        if (isNaN(a) || isNaN(b) || isNaN(c)) { show(code, 'в полях должны быть целые числа', 'bad'); msg = 'Старт, стоп и шаг — целые числа. Любое поле можно оставить пустым.'; }
+        else if (c === 0) { show(code, 'ValueError: slice step cannot be zero', 'bad'); msg = 'Шаг не может быть нулём.'; }
+        else {
+          picked = sliceIndices(n, a, b, c);
+          show(code, pyRepr(picked.map(function (k) { return chars[k]; }).join('')), 'res');
+          var step = c === null ? 1 : c;
+          if (!picked.length) msg = 'Срез пустой: между «старт» и «стоп» в этом направлении нет символов. Ошибки при этом нет — получается пустая строка.';
+          else if (step === -1 && a === null && b === null) msg = 'Шаг -1 без старта и стопа: вся строка задом наперёд.';
+          else if (step < 0) msg = 'Шаг отрицательный: идём справа налево, от индекса ' + picked[0] + ' до индекса ' + picked[picked.length - 1] + '.';
+          else msg = 'Взяты символы с индексами от ' + picked[0] + ' до ' + picked[picked.length - 1] + (step > 1 ? ' с шагом ' + step : '') +
+            (b !== null ? '. Символ с номером «стоп» в срез не входит.' : '. Стоп не указан — идём до конца.');
+        }
+      }
+      ruler.textContent = '';
+      chars.forEach(function (ch, k) {
+        var cell = el('div', 'sl-cell' + (picked.indexOf(k) >= 0 ? ' on' : ''));
+        cell.appendChild(el('small', '', String(k)));
+        cell.appendChild(el('b', '', ch === ' ' ? '␣' : ch));
+        cell.appendChild(el('small', '', String(k - n)));
+        ruler.appendChild(cell);
+      });
+      if (!n) ruler.appendChild(el('span', 'nm-empty', 'Строка пустая.'));
+      say.textContent = msg;
+    }
+    modes.forEach(function (m) { m.addEventListener('click', function () { mode = m.getAttribute('data-mode'); draw(); }); });
+    presets.forEach(function (p) {
+      p.addEventListener('click', function () {
+        mode = p.hasAttribute('data-i') ? 'index' : 'slice';
+        A.value = p.getAttribute('data-a'); B.value = p.getAttribute('data-b'); C.value = p.getAttribute('data-c');
+        draw();
+      });
+    });
+    [T, A, B, C].forEach(function (f) { f.addEventListener('input', draw); });
+    draw();
+  })();
+
+  /* --- Тренажёр 4: методы строк --- */
+  var Str = {
+    strip: function (s) { return s.replace(/^\s+|\s+$/g, ''); },
+    isdigit: function (s) { return /^\p{Nd}+$/u.test(s); },
+    isalpha: function (s) { return /^\p{L}+$/u.test(s); }
+  };
+  window.__pyStr = Str;
+  (function () {
+    var inp = $('#mt-text'); if (!inp) return;
+    var rows = $('#mt-rows'), say = $('#mt-say'), presets = $$('#mt-presets button');
+    function row(code, value, good) {
+      var tr = el('tr');
+      var c1 = el('td'); c1.appendChild(el('code', '', code)); tr.appendChild(c1);
+      var c2 = el('td', good === false ? 'bad' : ''); c2.appendChild(el('span', 'v', value)); tr.appendChild(c2);
+      rows.appendChild(tr);
+    }
+    function draw() {
+      var text = inp.value, clean = Str.strip(text), norm = clean.toLowerCase();
+      rows.textContent = '';
+      row('text', pyRepr(text));
+      row('len(text)', String(Array.from(text).length));
+      row('text.strip()', pyRepr(clean));
+      row('text.lower()', pyRepr(text.toLowerCase()));
+      row('text.upper()', pyRepr(text.toUpperCase()));
+      row('text.replace(" ", "")', pyRepr(text.split(' ').join('')));
+      row('text.strip().lower()', pyRepr(norm));
+      row('text == "да"', pyBool(text === 'да'), text === 'да');
+      row('text.strip().lower() == "да"', pyBool(norm === 'да'), norm === 'да');
+      row('"да" in text.lower()', pyBool(text.toLowerCase().indexOf('да') >= 0));
+      row('text.strip().isdigit()', pyBool(Str.isdigit(clean)));
+      var msg;
+      if (text === 'да') msg = 'Ответ набран идеально, и простое сравнение сработало. Но рассчитывать на это нельзя.';
+      else if (norm === 'да') msg = 'Простое сравнение text == "да" даёт False: мешают ' + (text !== clean ? 'пробелы' : 'большие буквы') + (text !== clean && clean !== norm ? ' и большие буквы' : '') + '. После strip() и lower() ответ равен «да», и программа его понимает.';
+      else if (text.toLowerCase().indexOf('да') >= 0) msg = 'Слово «да» внутри есть, поэтому in даёт True. Но строка целиком не равна «да», и сравнение через == даёт False.';
+      else if (Str.isdigit(clean)) msg = 'После strip() в строке остались только цифры. Значит, int(text) сработает без ошибки.';
+      else if (/\d/.test(clean)) msg = 'В строке есть цифры, но есть и другие символы, поэтому isdigit() даёт False. Сначала лишнее нужно убрать, например через replace().';
+      else msg = 'Это не «да». Методы всё равно привели строку к аккуратному виду: без пробелов по краям и маленькими буквами.';
+      say.textContent = msg;
+      presets.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === text)); });
+    }
+    presets.forEach(function (b) { b.addEventListener('click', function () { inp.value = b.getAttribute('data-v'); draw(); }); });
+    inp.addEventListener('input', draw);
+    draw();
+  })();
+})();
+</script>
+</body>
+</html>
